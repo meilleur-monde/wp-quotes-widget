@@ -1,0 +1,57 @@
+
+<p>
+    <label for="{{ title.id }}">{{ title.label }}</label>
+    <input class="widefat" id="{{ title.id }}" name="{{ title.name }}" type="text" value="{{ title.value | escape }}">
+</p>
+
+<p>
+    <input type="checkbox" id="{{ show_author.id }}" name="{{ show_author.name }}"  {% if show_author.value %}checked="checked"{% endif %}" />
+    <label for="{{ show_author.id }}">{{ show_author.label }}</label>
+</p>
+
+<p>
+    <input type="checkbox" id="{{ show_source.id }}" name="{{ show_source.name }}"  {% if show_source.value %}checked="checked"{% endif %}" />
+    <label for="{{ show_source.id }}">{{ show_source.label }}</label>
+</p>
+
+<p>
+    <input type="checkbox" id="{{ ajax_refresh.id }}" name="{{ ajax_refresh.name }}"  {% if ajax_refresh.value %}checked="checked"{% endif %}" />
+    <label for="{{ ajax_refresh.id }}">{{ ajax_refresh.label }}</label>
+</p>
+
+<p>
+    <input type="checkbox" id="{{ auto_refresh.id }}" name="{{ auto_refresh.name }}"  {% if auto_refresh.value %}checked="checked"{% endif %}" />
+    <label for="{{ auto_refresh.id }}">{{ auto_refresh.label }}</label>
+    <br/><span class="setting-description"><small>{{ auto_refresh.description }}</small></span>
+</p>
+<p>
+    <input type="checkbox" id="{{ random_refresh.id }}" name="{{ random_refresh.name }}"  {% if random_refresh.value %}checked="checked"{% endif %}" />
+    <label for="{{ random_refresh.id }}">{{ random_refresh.label }}</label>
+    <br/><span class="setting-description"><small>{{ random_refresh.description }}</small></span>
+</p>
+
+<p>
+    <label for="{{ refresh_interval.id }}">{{ refresh_interval.label }}</label>
+    <input
+            class="widefat" id="{{ refresh_interval.id }}" name="{{ refresh_interval.name }}"
+           type="number" value="{{ refresh_interval.value | escape }}"
+           min="{{ refresh_interval.min | escape }}" max="{{ refresh_interval.max | escape }}" step="{{ refresh_interval.step | escape }}"
+           style="width:3em;"
+    >
+</p>
+
+<p>
+    <label for="{{ tags.id }}">{{ tags.label }}</label>
+    <input class="widefat" id="{{ tags.id }}" name="{{ tags.name }}" type="text" value="{{ tags.value | escape }}">
+    <br/><span class="setting-description"><small>{{ tags.description }}</small></span>
+</p>
+
+<p>
+    <label for="{{ char_limit.id }}">{{ char_limit.label }}</label>
+    <input
+            class="widefat" id="{{ char_limit.id }}" name="{{ char_limit.name }}"
+            type="number" value="{{ char_limit.value | escape }}"
+            min="{{ char_limit.min | escape }}" max="{{ char_limit.max | escape }}" step="{{ char_limit.step | escape }}"
+            style="width:3em;"
+    >
+</p>
