@@ -27,23 +27,23 @@ Features and Notes
 * **Included** collection of quotes is directly managed by Wordpress, using custom post type.
 * **Tagging** ability to tag your quotes 
 
-For more information, visit the [plugin homepage](https://www.meilleur-monde.fr/worpress/wp-quotes-widget).
+For more information, visit the [plugin homepage](https://www.meilleur-monde.fr/wordpress/wp-quotes-widget).
 
 
 Installation
 ------------
 
-*Note:* The stable version of the plugin can be downloaded from the [WordPress plugin directory](https://wordpress.org/plugins/better-world-quotes-widget/). The latest development version can be downloaded from [GitHub](https://github.com/meilleur-monde/wp-quotes-widget), but it may not be stable. 
+*Note:* The stable version of the plugin can be downloaded from the [WordPress plugin directory](https://wordpress.org/plugins/better-world-quotes-widget). The latest development version can be downloaded from [GitHub](https://github.com/meilleur-monde/wp-quotes-widget), but it may not be stable. 
 
 For working, this plugin needs two other plugins:that you must install and activate in order to activate this plugin:using the below procedure.
-* [Timber Libray Plugin](https://fr.wordpress.org/plugins/timber-library/) 
-* [Better World Library](https://fr.wordpress.org/plugins/better-world-library/)
+* [Timber Libray Plugin](https://fr.wordpress.org/plugins/timber-library) 
+* [Better World Utilities Library](https://fr.wordpress.org/plugins/better-world-utilities-library)
 
 ### Method 1 ###
 
 1. Go to *Plugins -> Add New* in your WordPress admin area
 1. Type 'Better World Quotes Widget' in the search box available and hit the 'Enter' key
-1. Locate the 'Better World Quotes Widget' plugin authored by Francois C, and click 'Install Now'
+1. Locate the 'Better World Quotes Widget' plugin authored by Francois Chastanet, and click 'Install Now'
 
 ### Method 2 ###
 
@@ -64,8 +64,8 @@ After installation, the plugin can be activated from *Plugins -> Installed Plugi
 Links
 -----
 
-* [Plugin home page](https://wordpress.org/plugins/better-world-quotes-widget/)
-* [Plugin at the WordPress plugin directory](https://wordpress.org/plugins/better-world-quotes-widget/)
+* [Plugin home page](https://www.meilleur-monde.fr/wordpress/wp-quotes-widget)
+* [Plugin at the WordPress plugin directory](https://wordpress.org/plugins/better-world-quotes-widget)
 * [Support at the WordPress support forums](https://wordpress.org/support/plugin/better-world-quotes-widget)
 * [Development at GitHub](https://github.com/meilleur-monde/wp-quotes-widget)
 

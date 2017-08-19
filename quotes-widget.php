@@ -20,6 +20,7 @@ use Timber\Timber;
 
 include_once(ABSPATH.'wp-admin/includes/plugin.php');
 
+//TODO
 //register_activation_hook( __FILE__, array( 'QuotesWidget', 'activate' ) );
 //add_action( 'plugins_loaded', array( 'Quotes_Collection', 'load' ) );
 add_action('widgets_init', QuotesWidget::class.'::registerWidget' );
@@ -81,7 +82,7 @@ class QuotesWidget extends \WP_Widget {
         );
 
         // Enqueue styles for the front end
-        if ( UtilityFunctions::isFrontend() || UtilityFunctions::isAdminCustomization()) {
+        if ( Utilities::isFrontend() || Utilities::isAdminCustomizationEnabled()) {
             wp_register_style(
                 'quotescollection',
                 quotescollection_url( 'css/quotes-collection.css' ),
@@ -506,7 +507,7 @@ class QuotesWidget extends \WP_Widget {
 
             printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
         }
-        if (!is_plugin_active('better-world-library/library.php')) {
+        if (!is_plugin_active('better-world-utilities-library/utilities.php')) {
             $class = 'notice notice-error';
             $message = __('plugin '.self::PLUGIN_ID.', needs the plugin better-world-library', self::PLUGIN_NAME);
 
