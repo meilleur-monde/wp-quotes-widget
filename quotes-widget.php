@@ -5,12 +5,12 @@ if(!defined('ABSPATH')) exit;
 
 /*
 Plugin Name: BetterWorld Quotes widget
-Plugin URI: https://github.com/monde-meilleur/wp-quotes-widget
+Plugin URI: https://github.com/meilleur-monde/wp-quotes-widget
 Description: ability to add a widget to display quotes, the quotes are a custom type
 with some custom fields editable like any other pages or articles
 Version: 1.0
 Author: François Chastanet
-Author URI: https://github.com/monde-meilleur
+Author URI: https://github.com/meilleur-monde
 License: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 */
 

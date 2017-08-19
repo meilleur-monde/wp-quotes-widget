@@ -18,7 +18,7 @@ Features and Notes
 	* Option to refresh the quote automatically
 	* Show only quotes with certain tags
 	* Specify a character limit and filter out bigger quotes
-* **Shortcode**: Quotes can be displayed in a WordPress page by placing a `[quotcoll]`shortcode. Few examples are provided below. For more examples and the full list of arguments, please refer the [plugin homepage](https://www.monde-meilleur.fr/worpress/wp-quotes-widget).
+* **Shortcode**: Quotes can be displayed in a WordPress page by placing a `[quotcoll]`shortcode. Few examples are provided below. For more examples and the full list of arguments, please refer the [plugin homepage](https://www.meilleur-monde.fr/worpress/wp-quotes-widget).
 	* Placing `[quotcoll]` in the page displays all quotes.
 	* `[quotcoll author="Somebody"]` displays quotes authored by Somebody.
 	* `[quotcoll tags="tag1,tag2,tag3"]` displays quotes tagged tag1 or tag2 or tag3, one or more or all of these
@@ -27,13 +27,13 @@ Features and Notes
 * **Included** collection of quotes is directly managed by Wordpress, using custom post type.
 * **Tagging** ability to tag your quotes 
 
-For more information, visit the [plugin homepage](https://www.monde-meilleur.fr/worpress/wp-quotes-widget).
+For more information, visit the [plugin homepage](https://www.meilleur-monde.fr/worpress/wp-quotes-widget).
 
 
 Installation
 ------------
 
-*Note:* The stable version of the plugin can be downloaded from the [WordPress plugin directory](https://wordpress.org/plugins/better-world-quotes-widget/). The latest development version can be downloaded from [GitHub](https://github.com/monde-meilleur/wp-quotes-widget), but it may not be stable. 
+*Note:* The stable version of the plugin can be downloaded from the [WordPress plugin directory](https://wordpress.org/plugins/better-world-quotes-widget/). The latest development version can be downloaded from [GitHub](https://github.com/meilleur-monde/wp-quotes-widget), but it may not be stable. 
 
 For working, this plugin needs two other plugins:that you must install and activate in order to activate this plugin:using the below procedure.
 * [Timber Libray Plugin](https://fr.wordpress.org/plugins/timber-library/) 
@@ -67,5 +67,5 @@ Links
 * [Plugin home page](https://wordpress.org/plugins/better-world-quotes-widget/)
 * [Plugin at the WordPress plugin directory](https://wordpress.org/plugins/better-world-quotes-widget/)
 * [Support at the WordPress support forums](https://wordpress.org/support/plugin/better-world-quotes-widget)
-* [Development at GitHub](https://github.com/monde-meilleur/wp-quotes-widget)
+* [Development at GitHub](https://github.com/meilleur-monde/wp-quotes-widget)
 
