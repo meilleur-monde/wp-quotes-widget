@@ -1,6 +1,14 @@
 Better World Quotes Widget
 ==========================
 
+[![Build Status][travis-image]][travis-url]
+[![Coverage Status][coveralls-image]][coveralls-url]
+
+[travis-image]: https://img.shields.io/travis/meilleur-monde/wp-quotes-widget.svg
+[travis-url]: https://travis-ci.org/meilleur-monde/wp-quotes-widget
+[coveralls-image]: https://img.shields.io/coveralls/meilleur-monde/wp-quotes-widget.svg
+[coveralls-url]: https://coveralls.io/r/meilleur-monde/wp-quotes-widget
+
 Quotes Widget Plugin for [WordPress](https://wordpress.org/) creates for you a custom type Quote so you can manage your quotes independently from your other posts. You can also tag your quotes. create several widget for each of your tag.
 
 This plugin has been generally inspired by [Srinig Quotes Collection plugin](http://srinig.com/wordpress/plugins/quotes-collection/), thank you for your work. I have adapted this plugin for my own needs, and refactored the rendering part using twig file in order to separate data and view, the data are now stored in a wordpress custom type.  
