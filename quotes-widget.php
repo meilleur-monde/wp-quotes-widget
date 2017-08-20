@@ -4,7 +4,7 @@ namespace BetterWorld;
 if(!defined('ABSPATH')) exit;
 
 /*
-Plugin Name: BetterWorld Quotes widget
+Plugin Name: Better World Quotes widget
 Plugin URI: https://github.com/meilleur-monde/wp-quotes-widget
 Description: ability to add a widget to display quotes, the quotes are a custom type
 with some custom fields editable like any other pages or articles
@@ -14,21 +14,81 @@ Author URI: https://github.com/meilleur-monde
 License: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 */
 
-//needs is_plugin_active function
 use Timber\Post;
 use Timber\Timber;
 
-include_once(ABSPATH.'wp-admin/includes/plugin.php');
+require_once(ABSPATH.'wp-admin/includes/plugin.php');
 
-//TODO
-//register_activation_hook( __FILE__, array( 'QuotesWidget', 'activate' ) );
-//add_action( 'plugins_loaded', array( 'Quotes_Collection', 'load' ) );
-add_action('widgets_init', QuotesWidget::class.'::registerWidget' );
+/**
+ *  Activation Class
+ **/
+if ( ! class_exists( 'BetterWorld\\QuotesWidgetInstallCheck' ) ) {
+    class QuotesWidgetInstallCheck {
+        static function displayNotice($message, $class = 'notice notice-error') {
+            printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), $message);
+        }
+
+        static function pluginActivated() {
+            //indicate on the plugin that it has been just activated
+            add_option(QuotesWidget::PLUGIN_ACTIVATED_OPTION_NAME,QuotesWidget::PLUGIN_ID);
+        }
+
+        static function pluginDeactivated() {
+            //ensure rewrite rules are flush after the Quote custom type is unregistered
+            flush_rewrite_rules();
+        }
+
+        static function check() {
+            //check for plugin dependencies
+            $deactivatePlugin = [];
+            if (!is_plugin_active('timber-library/timber.php')) {
+                $deactivatePlugin[] = __('timber-library', QuotesWidget::PLUGIN_NAME);
+            }
+            if (!is_plugin_active('better-world-utilities-library/utilities.php')) {
+                $deactivatePlugin[] = __('better-world-library', QuotesWidget::PLUGIN_NAME);
+            }
+            if (!empty($deactivatePlugin)) {
+                deactivate_plugins(__FILE__, true);
+                delete_option(QuotesWidget::PLUGIN_ACTIVATED_OPTION_NAME);
+                $msg  = __('plugin ' . QuotesWidget::PLUGIN_ID . ' has been deactivated because it needs the following plugins : ', QuotesWidget::PLUGIN_NAME);
+                $msg .= join(', ', $deactivatePlugin );
+                self::displayNotice($msg);
+            }
+
+            //first time the plugin is activated
+            if (
+                is_admin() &&
+                get_option(QuotesWidget::PLUGIN_ACTIVATED_OPTION_NAME) === QuotesWidget::PLUGIN_ID
+            ) {
+                delete_option(QuotesWidget::PLUGIN_ACTIVATED_OPTION_NAME);
+
+                //ensure rewrite rules are flush after registering the new custom type
+                flush_rewrite_rules();
+                $msg  = __('plugin ' . QuotesWidget::PLUGIN_ID . ', the rewrite rules have been flushed after registering the new custom type Quote', QuotesWidget::PLUGIN_NAME);
+                self::displayNotice($msg, 'notice notice-info');
+            }
+        }
+    }
+}
+
+//only when the plugin is activated the first time
+register_activation_hook( __FILE__, [QuotesWidgetInstallCheck::class, 'pluginActivated'] );
+
+//only when the plugin is activated the first time
+register_deactivation_hook( __FILE__, [QuotesWidgetInstallCheck::class, 'pluginDeactivated'] );
+
+
+//check for plugin dependencies
+add_action('admin_init', [QuotesWidgetInstallCheck::class, 'check'] );
+
+//register this widget
+add_action('widgets_init', [QuotesWidget::class, 'registerWidget'] );
 
 
 class QuotesWidget extends \WP_Widget {
     const PLUGIN_ID = 'better-world-quotes-widget';
-    const PLUGIN_NAME = 'Quotes Widget';
+    const PLUGIN_ACTIVATED_OPTION_NAME = 'Activated_Plugin_better-world-quotes-widget';
+    const PLUGIN_NAME = 'Better World Quotes Widget';
     const QUOTE_CUSTOM_TYPE_ID = 'quote';
     const QUOTE_TAXONOMY_ID = 'quote-taxonomy';
     const PLUGIN_VERSION = '1.0';
@@ -82,10 +142,11 @@ class QuotesWidget extends \WP_Widget {
         );
 
         // Enqueue styles for the front end
+        // TODO allow theme customization
         if ( Utilities::isFrontend() || Utilities::isAdminCustomizationEnabled()) {
             wp_register_style(
                 'quotescollection',
-                quotescollection_url( 'css/quotes-collection.css' ),
+                plugins_url( 'css/quotes-widget.css' ),
                 false,
                 self::PLUGIN_VERSION
             );
@@ -118,10 +179,8 @@ class QuotesWidget extends \WP_Widget {
      */
     public static function registerWidget() {
         register_widget( get_class() );
-
-        //display some activation error or warning information to the admin user
-        add_action('admin_notices', __CLASS__.'::adminNoticePluginActivation');
     }
+
 
     /**
      * Register all widget instances of this widget class.
@@ -406,11 +465,10 @@ class QuotesWidget extends \WP_Widget {
         $formOptions = [];
         $fields = array_keys($options);
         foreach($fields as $field) {
-
             $addOption($formOptions, $field, $options[$field], $translations);
         }
 
-        Timber::render( 'twigTemplates/quotesWidgetForm.twig', $formOptions);
+        Timber::render( 'templates/quotesWidgetForm.twig', $formOptions);
     }
 
     /**
@@ -449,12 +507,12 @@ class QuotesWidget extends \WP_Widget {
         $quote = $this->getQuote($instance);
         if ($quote === false) {
             //no more quote
-            Timber::render( 'twigTemplates/noQuoteAvailable.twig', ['args' => $args, 'instance' => $instance]);
+            Timber::render( 'templates/noQuoteAvailable.twig', ['args' => $args, 'instance' => $instance]);
             return;
         }
 
         //renders the found quote
-        Timber::render( 'twigTemplates/quote.twig', [
+        Timber::render( 'templates/quote.twig', [
             'args' => $args,
             'instance' => $instance,
             'quote' => $quote['quote'],
@@ -496,22 +554,4 @@ class QuotesWidget extends \WP_Widget {
         ];
     }
 
-    /**
-     * @internal displays admin notices if dependant plugins not installed
-     */
-    public static function adminNoticePluginActivation()
-    {
-        if (!is_plugin_active('timber-library/timber.php')) {
-            $class = 'notice notice-error';
-            $message = __('plugin '.self::PLUGIN_ID.', needs the plugin timber-library', self::PLUGIN_NAME);
-
-            printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
-        }
-        if (!is_plugin_active('better-world-utilities-library/utilities.php')) {
-            $class = 'notice notice-error';
-            $message = __('plugin '.self::PLUGIN_ID.', needs the plugin better-world-library', self::PLUGIN_NAME);
-
-            printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
-        }
-    }
 } // end class
