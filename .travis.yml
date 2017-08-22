@@ -4,6 +4,11 @@
 # Use new container based environment
 sudo: false
 
+cache:
+  directories:
+    - node_modules
+    - php-codesniffer
+
 #use Trusty linux version
 dist: precise
 
@@ -26,6 +31,13 @@ matrix:
         # aliased to a recent 7.x version
         - php: '7.0'
 
+before_install:
+  # upgrade npm to 5, 6, or higher
+  - nvm install stable
+  - npm update -g npm # if necessary
+  - node --version
+  - npm --version
+
 # Use this to prepare your build for testing.
 # e.g. copy database configurations, environment variables, etc.
 # Failures in this section will result in build status 'errored'.
@@ -36,9 +48,9 @@ before_script:
   # Use the Git mirror of WordPress.
   - if [[ "$SNIFF" == "1" ]]; then git clone --depth=1 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_DEVELOP_DIR; fi
   # Install CodeSniffer for WordPress Coding Standards checks.
-  - if [[ "$SNIFF" == "1" ]]; then mkdir php-codesniffer && curl -L https://github.com/squizlabs/PHP_CodeSniffer/archive/master.tar.gz | tar xz --strip-components=1 -C php-codesniffer; fi
+  - if [[ "$SNIFF" == "1" && ! -d ./php-codesniffer ]]; then mkdir php-codesniffer && curl -L https://github.com/squizlabs/PHP_CodeSniffer/archive/master.tar.gz | tar xz --strip-components=1 -C php-codesniffer; fi
   # Install WordPress Coding Standards.
-  - if [[ "$SNIFF" == "1" ]]; then mkdir wordpress-coding-standards && curl -L https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/archive/master.tar.gz | tar xz --strip-components=1 -C wordpress-coding-standards; fi
+  - if [[ "$SNIFF" == "1" && ! -d ./wordpress-coding-standards ]]; then mkdir wordpress-coding-standards && curl -L https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/archive/master.tar.gz | tar xz --strip-components=1 -C wordpress-coding-standards; fi
   # Hop into CodeSniffer directory.
   - if [[ "$SNIFF" == "1" ]]; then cd php-codesniffer; fi
   # Set install path for WordPress Coding Standards
@@ -50,10 +62,7 @@ before_script:
   - if [[ "$SNIFF" == "1" ]]; then phpenv rehash; fi
   # Install ESLINT: JavaScript Code Style checker
   # @link https://eslint.org/
-  - if [[ "$SNIFF" == "1" ]]; then npm install -g eslint eslint-config-wordpress; fi
-  # Install stylelint
-  - if [[ "$SNIFF" == "1" ]]; then npm install -g stylelint; fi
-  - if [[ "$SNIFF" == "1" ]]; then npm install stylelint-config-wordpress; fi
+  - if [[ "$SNIFF" == "1" ]]; then npm install --only=dev; fi
 
 
 # Run test script commands.
