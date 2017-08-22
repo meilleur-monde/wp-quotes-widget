@@ -141,10 +141,20 @@ class QuotesWidget extends \WP_Widget {
     public function load_admin_script() {
         //load css style
         wp_enqueue_style(self::PLUGIN_ID, plugins_url( 'admin/css/quotes-widget.css', __FILE__));
-        //ensure jquery is loaded
-        wp_enqueue_script('jquery');
-        // Builtin tag auto complete script
-        wp_enqueue_script( 'suggest' );
+
+        //register javascript
+        wp_register_script('admin-quotes-widget',
+            plugins_url( 'admin/js/quotes-widget.js', __FILE__),
+            [
+                //ensure jquery is loaded
+                'jquery',
+                // Builtin tag auto complete script
+                'suggest'
+            ],
+            false,
+            true
+        );
+        wp_enqueue_script('admin-quotes-widget');
     }
 
     /**
@@ -643,14 +653,6 @@ class QuotesWidget extends \WP_Widget {
         $renderArgs['errors'] = $this->formValidationErrors;
 
         Timber::render( 'admin/templates/quotesWidgetForm.twig', $renderArgs);
-
-        //add javascript taxonomy tags selector
-        //add inline script specific to this widget
-        $context = Timber::get_context();
-        $context['taxonomy'] = self::QUOTE_TAXONOMY_ID;
-        //TODO change the way the script is loaded a jquery on change should be used
-        $context['jquery_selector'] = ".betterworld_tagsSelector";
-        Timber::render('admin/templates/tagsSuggestSelectorJavascript.twig', $context);
     }
 
     /**
