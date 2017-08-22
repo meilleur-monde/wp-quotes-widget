@@ -9,17 +9,17 @@
 
 /* Widget */
 
-.quotescollection-quote .attribution {
+.quotes-widget .attribution {
 	text-align: right;
 	margin-bottom: 1.4em;
 }
-.quotescollection-quote cite.author {
+.quotes-widget cite.author {
 	font-style: normal;
 }
-.quotescollection-quote cite.source {
+.quotes-widget cite.source {
 	font-style: italic;
 }
-.quotescollection-quote .nav-next {
+.quotes-widget .nav-next {
 	float: none;
 	clear: both;
 	width: 100%;
@@ -28,7 +28,7 @@
 
 
 /* Shortcode output */
-blockquote.quotescollection-quote {
+blockquote.quotes-widget {
 	border:0;
 	background:none;
 	padding:0;
@@ -36,8 +36,8 @@ blockquote.quotescollection-quote {
 	font-size:1em;
 	box-shadow: none;
 }
-blockquote.quotescollection-quote::before,
-blockquote.quotescollection-quote::after {
+blockquote.quotes-widget::before,
+blockquote.quotes-widget::after {
 	content:'';
 	content:none;
 	margin: 0;
@@ -45,6 +45,6 @@ blockquote.quotescollection-quote::after {
 	position: relative;
 }
 
-blockquote.quotescollection-quote footer.attribution cite {
+blockquote.quotes-widget footer.attribution cite {
 	font-size: 0.83em;
 }

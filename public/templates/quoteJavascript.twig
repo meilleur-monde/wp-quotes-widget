@@ -1,0 +1,18 @@
+{% if jsArgs.auto_refresh and jsArgs.nb_pages > 1 %}
+    <script type="text/javascript">
+        {#
+            Refresh functionality is included only when there is more than one quote for the condition
+            And instance ID is required for the refresh functionality
+        #}
+        var args_{{ jsArgs.widget_id }} = {
+            {%  for key, arg in jsArgs %}
+                '{{ key }}' : '{{ arg }}',
+            {% endfor %}
+            {%  for key, arg in jsLocalizationArgs %}
+                '{{ key }}' : '{{ arg | escape('js') }}',
+            {% endfor %}
+            'dummyArg': 'dummyValue'
+        };
+        quoteWidgetTimer(args_{{ jsArgs.widget_id }});
+    </script>
+{% endif %}

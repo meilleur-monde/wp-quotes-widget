@@ -1,8 +1,6 @@
 <?php
 namespace BetterWorld;
 
-if(!defined('ABSPATH')) exit;
-
 /*
 Plugin Name: Better World Quotes widget
 Plugin URI: https://github.com/meilleur-monde/wp-quotes-widget
@@ -13,6 +11,11 @@ Author: François Chastanet
 Author URI: https://github.com/meilleur-monde
 License: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+    die;
+}
 
 use Timber\Post;
 use Timber\Timber;
@@ -86,18 +89,30 @@ add_action('widgets_init', [QuotesWidget::class, 'registerWidget'] );
 
 
 class QuotesWidget extends \WP_Widget {
-    const PLUGIN_ID = 'better-world-quotes-widget';
-    const PLUGIN_ACTIVATED_OPTION_NAME = 'Activated_Plugin_better-world-quotes-widget';
+    const PLUGIN_ID = 'better_world_quotes_widget';
+    const PLUGIN_ACTIVATED_OPTION_NAME = 'Activated_Plugin_better_world_quotes_widget';
     const PLUGIN_NAME = 'Better World Quotes Widget';
     const QUOTE_CUSTOM_TYPE_ID = 'quote';
     const QUOTE_TAXONOMY_ID = 'quote-taxonomy';
     const PLUGIN_VERSION = '1.0';
 
     /**
+     * @var array contains the args to use for rendering the inline javascript part
+     */
+    protected $currentQuoteAjaxArgs;
+
+    /**
+     * @var array if update finds some errors, this variable contains the list of error messages
+     */
+    protected $formValidationErrors;
+
+    /**
      * Constructor. Sets up the widget name, description, etc.
      */
     public function __construct()
     {
+        $this->currentQuoteAjaxArgs = [];
+
         $id_base = self::PLUGIN_ID;
         $name = self::PLUGIN_NAME;
         $description = [
@@ -108,71 +123,143 @@ class QuotesWidget extends \WP_Widget {
             ),
         ];
 
-        add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts_and_styles' ) );
+        if (Utilities::isFrontEnd() || Utilities::isAdminCustomizationEnabled()) {
+            add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts_and_styles' ) );
+            add_action( 'wp_footer', array( $this, 'load_inline_script' ) );
+        }
+
+        if (is_admin()) {
+            add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_script') );
+        }
 
         parent::__construct($id_base, $name, $description);
     }
 
-    /** Load scripts and styles required at the front end **/
+    /**
+     * ADMIN ONLY
+     */
+    public function load_admin_script() {
+        //load css style
+        wp_enqueue_style(self::PLUGIN_ID, plugins_url( 'admin/css/quotes-widget.css', __FILE__));
+        //ensure jquery is loaded
+        wp_enqueue_script('jquery');
+        // Builtin tag auto complete script
+        wp_enqueue_script( 'suggest' );
+    }
+
+    /**
+     * ADMIN CUSTOMIZATION OR FRONTEND ONLY
+     *
+     * Load scripts and styles required at the front end
+     * Normally the widget has been rendered when we enter this callback
+     */
+    public function load_inline_script() {
+        //add inline script specific to this widget
+        $inlineScript = Timber::fetch( 'public/templates/quoteJavascript.twig', $this->currentQuoteAjaxArgs);
+        wp_add_inline_script( 'quotes-widget', $inlineScript );
+    }
+
+    /**
+     * ADMIN CUSTOMIZATION OR FRONTEND ONLY
+     *
+     * Load scripts and styles required at the front end
+     *Normally the widget has been rendered when we enter this callback
+     */
     public function load_scripts_and_styles() {
+
+        //add jquery if necessary
+        if ( ! wp_script_is( 'jquery', 'done' ) ) {
+            wp_enqueue_script( 'jquery' );
+        }
 
         // ajax refresh feature
         wp_enqueue_script(
-            'quotes_ajax', // handle
-            plugins_url( 'js/quotes-collection.js' ), // source
+            self::PLUGIN_ID, // handle
+            plugins_url( 'public/js/quotes-widget.js', __FILE__), // source
             array('jquery'), // dependencies
             self::PLUGIN_VERSION, // version
             true
         );
-        wp_localize_script( 'quotescollection', 'quotescollectionAjax', array(
-                // URL to wp-admin/admin-ajax.php to process the request
-                'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-
-                // generate a nonce with a unique ID "myajax-post-comment-nonce"
-                // so that you can check it later when an AJAX request is sent
-                'nonce' => wp_create_nonce( self::PLUGIN_ID ),
-
-                'loading' => __('Loading...', self::PLUGIN_ID),
-                'error' => __('Error getting quote', self::PLUGIN_ID),
-                //TODO
-//                'nextQuote' => $this->refresh_link_text,
-//                'autoRefreshMax' => $this->auto_refresh_max,
-//                'autoRefreshCount' => 0
-            )
-        );
 
         // Enqueue styles for the front end
         // TODO allow theme customization
-        if ( Utilities::isFrontend() || Utilities::isAdminCustomizationEnabled()) {
-            wp_register_style(
-                'quotescollection',
-                plugins_url( 'css/quotes-widget.css' ),
-                false,
-                self::PLUGIN_VERSION
-            );
-            wp_enqueue_style( 'quotescollection' );
-        }
-
-    }
-
-    /**
-     * The default widget options
-     *
-     * @return array The default options
-     */
-    protected function defaultOptions() {
-        return array(
-            'title'               => __('Quotes Widget', self::PLUGIN_ID),
-            'show_author'         => 1,
-            'show_source'         => 0,
-            'ajax_refresh'        => 1,
-            'auto_refresh'        => 0,
-            'random_refresh'      => 1,
-            'refresh_interval'    => 5,
-            'tags'                => '',
-            'char_limit'          => 500,
+        wp_register_style(
+            self::PLUGIN_ID,
+            plugins_url( 'public/css/quotes-widget.css',__FILE__ ) ,
+            false,
+            self::PLUGIN_VERSION
         );
+        wp_enqueue_style( 'quotes-widget' );
+
     }
+
+
+    protected function getFormOptions()
+    {
+        return [
+            'title' => [
+                'label' => __( 'Title', self::PLUGIN_ID ),
+                'defaultValue' => __('Quotes Widget', self::PLUGIN_ID),
+            ],
+            'show_author' => [
+                'label' => __( 'Show author?', self::PLUGIN_ID ),
+                'defaultValue' => 1,
+            ],
+            'show_source' => [
+                'label' => __( 'Show source?', self::PLUGIN_ID ),
+                'defaultValue' => 0,
+            ],
+            'ajax_refresh' => [
+                'label' => __( 'Show a refresh button', self::PLUGIN_ID ),
+                'defaultValue' => 1,
+            ],
+            'auto_refresh' => [
+                'label' => __( 'Auto refresh', self::PLUGIN_ID ),
+                'description' => __('if auto refresh activated, loop on quotes after a delay specified below', self::PLUGIN_ID),
+                'defaultValue' => 0,
+            ],
+            'refresh_interval' => [
+                'label' => __( 'if auto refresh activated, refresh automatically after this delay (in seconds)', self::PLUGIN_ID ),
+                'refresh_link_text'   => __('Refresh', self::PLUGIN_ID),
+                'min' => 1,
+                'max' => 60,
+                'step' => 1,
+                'defaultValue' => 5,
+                'validation_error_message' =>
+                    __('<strong>Warning : </strong> default value restored because entered refresh interval is invalid(value should be between 1 to 60)', self::PLUGIN_ID),
+            ],
+            'random_refresh' => [
+                'label' => __( 'Random refresh', self::PLUGIN_ID ),
+                'description' => __('if auto refresh activated, it will rotate quotes randomly, otherwise in the order added, latest first.', self::PLUGIN_ID),
+                'defaultValue' => 1,
+            ],
+            'tags' => [
+                'label' => __( 'Tags filter (comma separated)', self::PLUGIN_ID ),
+                'defaultValue' => '',
+                'validation_error_message' =>
+                    __('<strong>Warning : </strong>Following tags doesn\'t exist and have been removed', self::PLUGIN_ID),
+            ],
+            'char_limit' => [
+                'label' => __( 'Character limit (0 for unlimited)', self::PLUGIN_ID ),
+                'min' => 0,
+                'step' => 1,
+                'defaultValue' => 500,
+                'validation_error_message' =>
+                    __('<strong>Warning : </strong> default value restored because entered char limit is invalid(value should be between 0 to 500)', self::PLUGIN_ID),
+            ],
+        ];
+    }
+
+    protected function getFormOptionsDefaultValues()
+    {
+        $options = $this->getFormOptions();
+        $defaultValues = [];
+        foreach ($options as $key => $value) {
+            $defaultValues[$key] = $value['defaultValue'];
+        }
+        return $defaultValues;
+    }
+
 
     /**
      * Register the widget. Should be hooked to 'widgets_init'.
@@ -193,6 +280,88 @@ class QuotesWidget extends \WP_Widget {
 
         //custom type initialization
         add_filter( 'rwmb_meta_boxes', [$this, 'registerMetaBoxes']);
+    }
+
+    /**
+     * ADMIN ONLY
+     *
+     * @param array $new_instance
+     * @param array $old_instance
+     * @return array
+     */
+    function update( $new_instance, $old_instance ) {
+        $this->formValidationErrors = [];
+
+        $instance = $old_instance;
+        $formOptions = $this->getFormOptions();
+
+        //store instance id
+        $instance['widget_id'] = $this->id;
+
+        //trim string values
+        $instance['title'] = trim($new_instance['title']);
+
+        // convert on/off values to boolean(int) values
+        $instance[ 'show_author' ] = (bool)($new_instance[ 'show_author' ]);
+        $instance[ 'show_source' ] = (bool)($new_instance[ 'show_source' ]);
+        $instance[ 'ajax_refresh' ] = (bool)($new_instance[ 'ajax_refresh' ]);
+        $instance[ 'auto_refresh' ] = (bool)($new_instance[ 'auto_refresh' ]);
+        $instance[ 'random_refresh' ] = (bool)($new_instance[ 'random_refresh' ]);
+
+        //convert and validate int value
+        $val = $new_instance[ 'refresh_interval' ];
+        if (
+            !is_numeric($val) ||
+            ((int)($val)) < $formOptions['refresh_interval']['min']
+            || ((int)($val)) > $formOptions['refresh_interval']['max']
+        ) {
+            $this->formValidationErrors[ 'refresh_interval_error_msg' ] = $formOptions['refresh_interval']['validation_error_message'];
+            $this->formValidationErrors[ 'refresh_interval_error_value' ] = $val;
+            $instance[ 'refresh_interval' ] = (int)($formOptions[ 'refresh_interval' ]['defaultValue']);
+        } else {
+            $instance[ 'refresh_interval' ] = (int)($val);
+        }
+
+        $val = $new_instance[ 'char_limit' ];
+        if (
+            !is_numeric($val) || ((int)($val)) < $formOptions['char_limit']['min']
+        ) {
+            $this->formValidationErrors[ 'char_limit_error_msg' ] = $formOptions['char_limit']['validation_error_message'];
+            $this->formValidationErrors[ 'char_limit_error_value' ] = $val;
+            $instance[ 'char_limit' ] = (int)($formOptions[ 'char_limit' ]['defaultValue']);
+        } else {
+            $instance[ 'char_limit' ] = (int)($val);
+        }
+
+        //convert tags list to array
+        $instance['tags'] = $new_instance[ 'tags' ];
+        if (!empty($new_instance[ 'tags' ])) {
+            $tags = explode(',', $new_instance['tags']);
+            //tags validation
+            $validatedTagList = [];
+            $errorTagList = [];
+            foreach($tags as $tag) {
+                $tag = trim($tag);
+                if (empty($tag)) {
+                    continue;
+                }
+                $ret = term_exists($tag, self::QUOTE_TAXONOMY_ID);
+                if ($ret) {
+                    $validatedTagList [] = $ret['term_id'];
+                } else {
+                    $errorTagList[] = $tag;
+                }
+            }
+            if (!empty($errorTagList)) {
+                $this->formValidationErrors['tags_error_msg'] = $formOptions['tags']['validation_error_message'];
+                $this->formValidationErrors[ 'tags_error_value' ] = (join(', ', $errorTagList));
+            }
+            //tags validated list
+            $instance['tags'] = array_unique($validatedTagList);
+
+        }
+
+        return $instance;
     }
 
     /**
@@ -278,6 +447,11 @@ class QuotesWidget extends \WP_Widget {
         register_taxonomy_for_object_type( self::QUOTE_TAXONOMY_ID, self::QUOTE_CUSTOM_TYPE_ID );
     }
 
+    /**
+     * @internal
+     * @param $meta_boxes
+     * @return array
+     */
     public function registerMetaBoxes($meta_boxes) {
         $this->registerQuoteCustomType();
         $prefix = self::QUOTE_CUSTOM_TYPE_ID;
@@ -376,6 +550,8 @@ class QuotesWidget extends \WP_Widget {
     }
 
     /**
+     * ADMIN ONLY
+     *
      * add the columns(author and source) on the quote custom type list
      * @param $defaults
      * @return mixed
@@ -394,6 +570,12 @@ class QuotesWidget extends \WP_Widget {
         return $defaults;
    }
 
+    /**
+     * ADMIN ONLY
+     *
+     * @param $column_name
+     * @param $post_ID
+     */
    public function addColumnsContentToQuotesList($column_name, $post_ID) {
         $prefix = self::QUOTE_CUSTOM_TYPE_ID;
 
@@ -404,6 +586,8 @@ class QuotesWidget extends \WP_Widget {
 
 
     /**
+     * ADMIN ONLY
+     *
      * Outputs the settings update form.
      *
      * @since 2.8.0
@@ -414,65 +598,67 @@ class QuotesWidget extends \WP_Widget {
      * @inheritdoc
      */
     public function form( $instance ) {
-        $options = $this->defaultOptions();
+        $options = $this->getFormOptionsDefaultValues();
+
         $options = array_merge($options, $instance);
+
         if( isset( $options['char_limit'] ) && !is_numeric( $options['char_limit'] ) ) {
             $options['char_limit'] = __('none', self::PLUGIN_ID);
         }
-        $translations = [
-            'title' => ['label' => __( 'Title', self::PLUGIN_ID )],
-            'show_author' => ['label' => __( 'Show author?', self::PLUGIN_ID )],
-            'show_source' => ['label' => __( 'Show source?', self::PLUGIN_ID )],
-            'ajax_refresh' => ['label' => __( 'Refresh feature', self::PLUGIN_ID )],
-            'auto_refresh' => [
-                'label' => __( 'Auto refresh', self::PLUGIN_ID ),
-                'description' => __('if auto refresh activated, loop on quotes after a delay specified below', self::PLUGIN_ID),
-            ],
-            'refresh_interval' => [
-                'label' => __( 'if auto refresh activated, refresh automatically after this delay', self::PLUGIN_ID ),
-                'min' => 1,
-                'max' => 60,
-                'step' => 1,
-            ],
-            'random_refresh' => [
-                'label' => __( 'Random refresh', self::PLUGIN_ID ),
-                'description' => __('if auto refresh activated, it will rotate quotes randomly, otherwise in the order added, latest first.', self::PLUGIN_ID),
-            ],
-            'tags' => [
-                'label' => __( 'Tags filter', self::PLUGIN_ID ),
-                'description' => __('Comma separated', self::PLUGIN_ID)
-            ],
-            'char_limit' => [
-                'label' => __( 'Character limit (0 for unlimited)', self::PLUGIN_ID ),
-                'min' => 0,
-                'step' => 1,
-            ],
+        //convert tags array to string
+        if( isset( $options['tags'] )) {
+            $tags = '';
+            if (is_array( $options['tags'] )) {
+                foreach($options['tags'] as $tag) {
+                    $ret = get_term($tag, self::QUOTE_TAXONOMY_ID);
+                    if ($ret) {
+                        //tag still exist
+                        $tags .= $ret->name.', ';
+                    }
 
-        ];
-        $addOption = function(&$data, $fieldName, $fieldValue, $translations) {
+                }
+            }
+            $options['tags'] = $tags;
+        }
+
+        $formOptions = $this->getFormOptions();
+        $addOption = function(&$data, $fieldName, $fieldValue, $formOptions) {
 
 
-            if (isset($translations[$fieldName])) {
-                $field = $translations[$fieldName];
+            if (isset($formOptions[$fieldName])) {
+                $field = $formOptions[$fieldName];
                 $field['value'] = $fieldValue;
                 $field['id'] = $this->get_field_id($fieldName);
                 $field['name'] = $this->get_field_name($fieldName);
-                $field['label'] = $translations[$fieldName]['label'];
+                $field['label'] = $formOptions[$fieldName]['label'];
                 $data[$fieldName] = $field;
+            } else {
+                //add it as is
+                $data[$fieldName] = $fieldValue;
             }
+
         };
 
-        $formOptions = [];
+        $renderArgs = [];
         $fields = array_keys($options);
         foreach($fields as $field) {
-            $addOption($formOptions, $field, $options[$field], $translations);
+            $addOption($renderArgs, $field, $options[$field], $formOptions);
         }
+        $renderArgs['errors'] = $this->formValidationErrors;
 
-        Timber::render( 'templates/quotesWidgetForm.twig', $formOptions);
+        Timber::render( 'admin/templates/quotesWidgetForm.twig', $renderArgs);
+
+        //add javascript taxonomy tags selector
+        //add inline script specific to this widget
+        $context = Timber::get_context();
+        $context['taxonomy'] = self::QUOTE_TAXONOMY_ID;
+        //TODO change the way the script is loaded a jquery on change should be used
+        $context['jquery_selector'] = ".betterworld_tagsSelector";
+        Timber::render('admin/templates/tagsSuggestSelectorJavascript.twig', $context);
     }
 
     /**
-     * Front end output
+     * ADMIN CUSTOMIZATION OR FRONTEND ONLY
      *
      * @see WP_Widget::widget()
      *
@@ -489,6 +675,7 @@ class QuotesWidget extends \WP_Widget {
      *      - widget_name
      * @param array $instance Saved values from database (overriding defaultOptions)
      *      - title
+     *      - refresh_link_text
      *      - show_author
      *      - show_source
      *      - ajax_refresh
@@ -501,26 +688,63 @@ class QuotesWidget extends \WP_Widget {
      */
     public function widget( $args, $instance )
     {
-        $options = $this->defaultOptions();
+        $options = $this->getFormOptionsDefaultValues();
         $instance = array_merge($options, $instance);
 
         $quote = $this->getQuote($instance);
         if ($quote === false) {
             //no more quote
-            Timber::render( 'templates/noQuoteAvailable.twig', ['args' => $args, 'instance' => $instance]);
+            Timber::render( 'public/templates/noQuoteAvailable.twig', ['args' => $args, 'instance' => $instance]);
             return;
         }
 
         //renders the found quote
-        Timber::render( 'templates/quote.twig', [
+        $renderArgs = [
             'args' => $args,
             'instance' => $instance,
-            'quote' => $quote['quote'],
-            'current_page' => $quote['current_page'],
-        ]);
+        ];
+        $renderArgs = array_merge($renderArgs, $quote);
+
+        //initialize ajax rendering args
+        $this->currentQuoteAjaxArgs = [
+            'jsArgs' => [
+                'widget_id'         => str_replace('-', '_', $instance['widget_id']),
+                'auto_refresh' => $instance['auto_refresh'],
+                'refresh_interval' => $instance['refresh_interval'],
+                'currentPage'      => $quote['current_page'],
+                'nb_pages'         => $quote['nb_pages'],
+                // URL to wp-admin/admin-ajax.php to process the request
+                'ajaxUrl'          => admin_url( 'admin-ajax.php' ),
+
+                // generate a token
+                'nonce'            => wp_create_nonce( self::PLUGIN_ID ),
+            ],
+            //translated strings
+            'jsLocalizationArgs' => [
+                'loading'          => __('Loading...', self::PLUGIN_ID),
+                'error'            => __('Error getting quote', self::PLUGIN_ID),
+            ],
+            //for plugin customization purpose
+            'everything' => $renderArgs,
+        ];
+        Timber::render( 'public/templates/quote.twig', $renderArgs);
     }
 
-    protected function getQuote($options, $paged = 0) {
+    /**
+     * ADMIN CUSTOMIZATION OR FRONTEND ONLY
+     *
+     * @param $options
+     * @param int $paged page number (1-based)
+     * @return array|bool
+     *  - quote :
+     *      - quote_quote
+     *      - quote_quote_author
+     *      - quote_quote_source
+     *      - quote_quote_source_is_url
+     *  - current_page
+     *  - nb_pages
+     */
+    protected function getQuote($options, $paged = 1) {
         //TODO tag filter
         //TODO random
         $queryFilters = [
@@ -537,7 +761,7 @@ class QuotesWidget extends \WP_Widget {
             if ($paged > 0) {
                 //something wrong with the pagination occurred
                 //try to get quote from the beginning
-                return $this->getQuote($options, 0);
+                return $this->getQuote($options, 1);
             } else {
                 //first page contains nothing, nothing to return
                 return false;
@@ -548,9 +772,22 @@ class QuotesWidget extends \WP_Widget {
         $post = $posts[0];
         $quote = new Post($post->ID);
 
+        //apply filters on some properties
+        $quote->quote_quote = trim($quote->quote_quote);
+        $quote->quote_quote_author = trim($quote->quote_quote_author);
+        $quote->quote_quote_source = trim($quote->quote_quote_source);
+
+        //check if source is an url
+        $quote->quote_quote_source_is_url = false;
+        if (isset($quote->quote_quote_source)) {
+            $quote->quote_quote_source_is_url =
+                filter_var($quote->quote_quote_source, FILTER_VALIDATE_URL);
+        }
+
         return [
             'quote' => $quote,
             'current_page' => $paged,
+            'nb_pages' => $query->max_num_pages,
         ];
     }
 

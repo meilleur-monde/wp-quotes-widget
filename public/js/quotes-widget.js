@@ -8,7 +8,7 @@ betterWorld.quotes.refresh = function (args) {
             url: quotescollectionAjax.ajaxUrl,
             data: "action=quotescollection&_ajax_nonce=" + quotescollectionAjax.nonce + "&current=" + args.currQuoteID + "&char_limit=" + args.charLimit + "&tags=" + args.tags + "&orderby=" + args.orderBy,
             success: function (response) {
-                if (response == '-1' || !response) {
+                if (response === '-1' || !response) {
                     if (args.ajaxRefresh && args.autoRefresh)
                         quotescollectionTimer(args);
                     else if (args.ajaxRefresh && !args.autoRefresh)

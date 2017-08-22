@@ -1,0 +1,41 @@
+<div class="quotes-widget {{ instance.widget_id }}">
+    {{ args.before_widget }}
+    {# title if exists #}
+    {% if instance.title|trim is not empty %}
+        {{ args.before_title | raw }}{{ instance.title | apply_filters('widget_title') }}{{ args.after_title | raw }}
+    {% endif %}
+
+    {# quote #}
+    <p>{{ quote.quote_quote }}</p>
+
+    {# attribution #}
+    {% if (instance.show_author and quote.quote_quote_author is not empty)
+        or (instance.show_source and quote.quote_quote_source is not empty)
+    %}
+        <div class="attribution">&mdash;&nbsp;
+            {% if (instance.show_author and quote.quote_quote_author is not empty) %}
+                <cite class="author">{{ quote.quote_quote_author }}</cite>
+            {% endif %}
+            {% if (instance.show_source and quote.quote_quote_source is not empty) %}
+                <cite class="title source">
+                    {% if quote.quote_quote_source_is_url %}
+                        <a href="{{ quote.quote_quote_source }}">{{ quote.quote_quote_source }}</a>
+                    {% else %}
+                        {{ quote.quote_quote_source }}
+                    {% endif %}
+                </cite>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {# pagination #}
+    <div class="navigation">
+        <div class="nav-next">
+            <a class="next-quote-link" style="cursor:pointer;" onclick="quoteRefresh('{{ instance.widget_id }}')">
+                {{ instance.refresh_link_text }}
+            </a>
+        </div>
+    </div>
+
+    {{ args.after_widget }}
+</div>
