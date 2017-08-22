@@ -48,9 +48,9 @@ before_script:
   # Use the Git mirror of WordPress.
   - if [[ "$SNIFF" == "1" ]]; then git clone --depth=1 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_DEVELOP_DIR; fi
   # Install CodeSniffer for WordPress Coding Standards checks.
-  - if [[ "$SNIFF" == "1" && ! -f ./php-codesniffer/bin/phpcs ]]; then mkdir php-codesniffer && curl -L https://github.com/squizlabs/PHP_CodeSniffer/archive/master.tar.gz | tar xz --strip-components=1 -C php-codesniffer; fi
+  - if [[ "$SNIFF" == "1" && ! -f ./php-codesniffer/bin/phpcs ]]; then mkdir -p php-codesniffer && curl -L https://github.com/squizlabs/PHP_CodeSniffer/archive/master.tar.gz | tar xz --strip-components=1 -C php-codesniffer; fi
   # Install WordPress Coding Standards.
-  - if [[ "$SNIFF" == "1" && ! -f ./wordpress-coding-standards/bin/phpcs.xml ]]; then mkdir wordpress-coding-standards && curl -L https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/archive/master.tar.gz | tar xz --strip-components=1 -C wordpress-coding-standards; fi
+  - if [[ "$SNIFF" == "1" && ! -f ./wordpress-coding-standards/bin/phpcs.xml ]]; then mkdir -p wordpress-coding-standards && curl -L https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/archive/master.tar.gz | tar xz --strip-components=1 -C wordpress-coding-standards; fi
   # Set install path for WordPress Coding Standards
   # @link https://github.com/squizlabs/PHP_CodeSniffer/blob/4237c2fc98cc838730b76ee9cee316f99286a2a7/CodeSniffer.php#L1941
   - if [[ "$SNIFF" == "1" ]]; then ./php-codesniffer/bin/phpcs --config-set installed_paths ./wordpress-coding-standards; fi
