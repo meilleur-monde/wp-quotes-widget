@@ -193,81 +193,12 @@ class QuotesWidget extends \WP_Widget {
 
     }
 
-
-    protected function getFormOptions()
-    {
-        return [
-            'title' => [
-                'label' => __( 'Title', self::PLUGIN_ID ),
-                'defaultValue' => __('Quotes Widget', self::PLUGIN_ID),
-            ],
-            'show_author' => [
-                'label' => __( 'Show author?', self::PLUGIN_ID ),
-                'defaultValue' => 1,
-            ],
-            'show_source' => [
-                'label' => __( 'Show source?', self::PLUGIN_ID ),
-                'defaultValue' => 0,
-            ],
-            'ajax_refresh' => [
-                'label' => __( 'Show a refresh button', self::PLUGIN_ID ),
-                'defaultValue' => 1,
-            ],
-            'auto_refresh' => [
-                'label' => __( 'Auto refresh', self::PLUGIN_ID ),
-                'description' => __('if auto refresh activated, loop on quotes after a delay specified below', self::PLUGIN_ID),
-                'defaultValue' => 0,
-            ],
-            'refresh_interval' => [
-                'label' => __( 'if auto refresh activated, refresh automatically after this delay (in seconds)', self::PLUGIN_ID ),
-                'refresh_link_text'   => __('Refresh', self::PLUGIN_ID),
-                'min' => 1,
-                'max' => 60,
-                'step' => 1,
-                'defaultValue' => 5,
-                'validation_error_message' =>
-                    __('<strong>Warning : </strong> default value restored because entered refresh interval is invalid(value should be between 1 to 60)', self::PLUGIN_ID),
-            ],
-            'random_refresh' => [
-                'label' => __( 'Random refresh', self::PLUGIN_ID ),
-                'description' => __('if auto refresh activated, it will rotate quotes randomly, otherwise in the order added, latest first.', self::PLUGIN_ID),
-                'defaultValue' => 1,
-            ],
-            'tags' => [
-                'label' => __( 'Tags filter (comma separated)', self::PLUGIN_ID ),
-                'defaultValue' => '',
-                'validation_error_message' =>
-                    __('<strong>Warning : </strong>Following tags doesn\'t exist and have been removed', self::PLUGIN_ID),
-            ],
-            'char_limit' => [
-                'label' => __( 'Character limit (0 for unlimited)', self::PLUGIN_ID ),
-                'min' => 0,
-                'step' => 1,
-                'defaultValue' => 500,
-                'validation_error_message' =>
-                    __('<strong>Warning : </strong> default value restored because entered char limit is invalid(value should be between 0 to 500)', self::PLUGIN_ID),
-            ],
-        ];
-    }
-
-    protected function getFormOptionsDefaultValues()
-    {
-        $options = $this->getFormOptions();
-        $defaultValues = [];
-        foreach ($options as $key => $value) {
-            $defaultValues[$key] = $value['defaultValue'];
-        }
-        return $defaultValues;
-    }
-
-
     /**
      * Register the widget. Should be hooked to 'widgets_init'.
      */
     public static function registerWidget() {
         register_widget( get_class() );
     }
-
 
     /**
      * Register all widget instances of this widget class.
@@ -280,88 +211,6 @@ class QuotesWidget extends \WP_Widget {
 
         //custom type initialization
         add_filter( 'rwmb_meta_boxes', [$this, 'registerMetaBoxes']);
-    }
-
-    /**
-     * ADMIN ONLY
-     *
-     * @param array $new_instance
-     * @param array $old_instance
-     * @return array
-     */
-    function update( $new_instance, $old_instance ) {
-        $this->formValidationErrors = [];
-
-        $instance = $old_instance;
-        $formOptions = $this->getFormOptions();
-
-        //store instance id
-        $instance['widget_id'] = $this->id;
-
-        //trim string values
-        $instance['title'] = trim($new_instance['title']);
-
-        // convert on/off values to boolean(int) values
-        $instance[ 'show_author' ] = (bool)($new_instance[ 'show_author' ]);
-        $instance[ 'show_source' ] = (bool)($new_instance[ 'show_source' ]);
-        $instance[ 'ajax_refresh' ] = (bool)($new_instance[ 'ajax_refresh' ]);
-        $instance[ 'auto_refresh' ] = (bool)($new_instance[ 'auto_refresh' ]);
-        $instance[ 'random_refresh' ] = (bool)($new_instance[ 'random_refresh' ]);
-
-        //convert and validate int value
-        $val = $new_instance[ 'refresh_interval' ];
-        if (
-            !is_numeric($val) ||
-            ((int)($val)) < $formOptions['refresh_interval']['min']
-            || ((int)($val)) > $formOptions['refresh_interval']['max']
-        ) {
-            $this->formValidationErrors[ 'refresh_interval_error_msg' ] = $formOptions['refresh_interval']['validation_error_message'];
-            $this->formValidationErrors[ 'refresh_interval_error_value' ] = $val;
-            $instance[ 'refresh_interval' ] = (int)($formOptions[ 'refresh_interval' ]['defaultValue']);
-        } else {
-            $instance[ 'refresh_interval' ] = (int)($val);
-        }
-
-        $val = $new_instance[ 'char_limit' ];
-        if (
-            !is_numeric($val) || ((int)($val)) < $formOptions['char_limit']['min']
-        ) {
-            $this->formValidationErrors[ 'char_limit_error_msg' ] = $formOptions['char_limit']['validation_error_message'];
-            $this->formValidationErrors[ 'char_limit_error_value' ] = $val;
-            $instance[ 'char_limit' ] = (int)($formOptions[ 'char_limit' ]['defaultValue']);
-        } else {
-            $instance[ 'char_limit' ] = (int)($val);
-        }
-
-        //convert tags list to array
-        $instance['tags'] = $new_instance[ 'tags' ];
-        if (!empty($new_instance[ 'tags' ])) {
-            $tags = explode(',', $new_instance['tags']);
-            //tags validation
-            $validatedTagList = [];
-            $errorTagList = [];
-            foreach($tags as $tag) {
-                $tag = trim($tag);
-                if (empty($tag)) {
-                    continue;
-                }
-                $ret = term_exists($tag, self::QUOTE_TAXONOMY_ID);
-                if ($ret) {
-                    $validatedTagList [] = $ret['term_id'];
-                } else {
-                    $errorTagList[] = $tag;
-                }
-            }
-            if (!empty($errorTagList)) {
-                $this->formValidationErrors['tags_error_msg'] = $formOptions['tags']['validation_error_message'];
-                $this->formValidationErrors[ 'tags_error_value' ] = (join(', ', $errorTagList));
-            }
-            //tags validated list
-            $instance['tags'] = array_unique($validatedTagList);
-
-        }
-
-        return $instance;
     }
 
     /**
@@ -556,7 +405,7 @@ class QuotesWidget extends \WP_Widget {
      * @param $defaults
      * @return mixed
      */
-   public function addColumnsToQuotesList($defaults) {
+    public function addColumnsToQuotesList($defaults) {
         $prefix = self::QUOTE_CUSTOM_TYPE_ID;
         $defaults[$prefix.'_quote'] = _x('Quote', 'Quote List column', self::QUOTE_CUSTOM_TYPE_ID);
 
@@ -576,7 +425,7 @@ class QuotesWidget extends \WP_Widget {
      * @param $column_name
      * @param $post_ID
      */
-   public function addColumnsContentToQuotesList($column_name, $post_ID) {
+    public function addColumnsContentToQuotesList($column_name, $post_ID) {
         $prefix = self::QUOTE_CUSTOM_TYPE_ID;
 
         if ($column_name === $prefix . '_quote') {
@@ -584,6 +433,153 @@ class QuotesWidget extends \WP_Widget {
         }
     }
 
+    protected function getFormOptions()
+    {
+        return [
+            'title' => [
+                'label' => __( 'Title', self::PLUGIN_ID ),
+                'defaultValue' => __('Quotes Widget', self::PLUGIN_ID),
+            ],
+            'show_author' => [
+                'label' => __( 'Show author?', self::PLUGIN_ID ),
+                'defaultValue' => 1,
+            ],
+            'show_source' => [
+                'label' => __( 'Show source?', self::PLUGIN_ID ),
+                'defaultValue' => 0,
+            ],
+            'ajax_refresh' => [
+                'label' => __( 'Show a refresh button', self::PLUGIN_ID ),
+                'defaultValue' => 1,
+            ],
+            'auto_refresh' => [
+                'label' => __( 'Auto refresh', self::PLUGIN_ID ),
+                'description' => __('if auto refresh activated, loop on quotes after a delay specified below', self::PLUGIN_ID),
+                'defaultValue' => 0,
+            ],
+            'refresh_interval' => [
+                'label' => __( 'if auto refresh activated, refresh automatically after this delay (in seconds)', self::PLUGIN_ID ),
+                'refresh_link_text'   => __('Refresh', self::PLUGIN_ID),
+                'min' => 1,
+                'max' => 60,
+                'step' => 1,
+                'defaultValue' => 5,
+                'validation_error_message' =>
+                    __('<strong>Warning : </strong> default value restored because entered refresh interval is invalid(value should be between 1 to 60)', self::PLUGIN_ID),
+            ],
+            'random_refresh' => [
+                'label' => __( 'Random refresh', self::PLUGIN_ID ),
+                'description' => __('if auto refresh activated, it will rotate quotes randomly, otherwise in the order added, latest first.', self::PLUGIN_ID),
+                'defaultValue' => 1,
+            ],
+            'tags' => [
+                'label' => __( 'Tags filter (comma separated)', self::PLUGIN_ID ),
+                'defaultValue' => '',
+                'validation_error_message' =>
+                    __('<strong>Warning : </strong>Following tags doesn\'t exist and have been removed', self::PLUGIN_ID),
+            ],
+            'char_limit' => [
+                'label' => __( 'Character limit (0 for unlimited)', self::PLUGIN_ID ),
+                'min' => 0,
+                'step' => 1,
+                'defaultValue' => 500,
+                'validation_error_message' =>
+                    __('<strong>Warning : </strong> default value restored because entered char limit is invalid(value should be between 0 to 500)', self::PLUGIN_ID),
+            ],
+        ];
+    }
+
+    protected function getFormOptionsDefaultValues()
+    {
+        $options = $this->getFormOptions();
+        $defaultValues = [];
+        foreach ($options as $key => $value) {
+            $defaultValues[$key] = $value['defaultValue'];
+        }
+        return $defaultValues;
+    }
+
+    /**
+     * ADMIN ONLY
+     *
+     * @param array $new_instance
+     * @param array $old_instance
+     * @return array
+     */
+    function update( $new_instance, $old_instance ) {
+        $this->formValidationErrors = [];
+
+        $instance = $old_instance;
+        $formOptions = $this->getFormOptions();
+
+        //store instance id
+        $instance['widget_id'] = $this->id;
+
+        //trim string values
+        $instance['title'] = trim($new_instance['title']);
+
+        // convert on/off values to boolean(int) values
+        $instance[ 'show_author' ] = (bool)($new_instance[ 'show_author' ]);
+        $instance[ 'show_source' ] = (bool)($new_instance[ 'show_source' ]);
+        $instance[ 'ajax_refresh' ] = (bool)($new_instance[ 'ajax_refresh' ]);
+        $instance[ 'auto_refresh' ] = (bool)($new_instance[ 'auto_refresh' ]);
+        $instance[ 'random_refresh' ] = (bool)($new_instance[ 'random_refresh' ]);
+
+        //convert and validate int value
+        $val = $new_instance[ 'refresh_interval' ];
+        if (
+            !is_numeric($val) ||
+            ((int)($val)) < $formOptions['refresh_interval']['min']
+            || ((int)($val)) > $formOptions['refresh_interval']['max']
+        ) {
+            $this->formValidationErrors[ 'refresh_interval_error_msg' ] = $formOptions['refresh_interval']['validation_error_message'];
+            $this->formValidationErrors[ 'refresh_interval_error_value' ] = $val;
+            $instance[ 'refresh_interval' ] = (int)($formOptions[ 'refresh_interval' ]['defaultValue']);
+        } else {
+            $instance[ 'refresh_interval' ] = (int)($val);
+        }
+
+        $val = $new_instance[ 'char_limit' ];
+        if (
+            !is_numeric($val) || ((int)($val)) < $formOptions['char_limit']['min']
+        ) {
+            $this->formValidationErrors[ 'char_limit_error_msg' ] = $formOptions['char_limit']['validation_error_message'];
+            $this->formValidationErrors[ 'char_limit_error_value' ] = $val;
+            $instance[ 'char_limit' ] = (int)($formOptions[ 'char_limit' ]['defaultValue']);
+        } else {
+            $instance[ 'char_limit' ] = (int)($val);
+        }
+
+        //convert tags list to array
+        $instance['tags'] = $new_instance[ 'tags' ];
+        if (!empty($new_instance[ 'tags' ])) {
+            $tags = explode(',', $new_instance['tags']);
+            //tags validation
+            $validatedTagList = [];
+            $errorTagList = [];
+            foreach($tags as $tag) {
+                $tag = trim($tag);
+                if (empty($tag)) {
+                    continue;
+                }
+                $ret = term_exists($tag, self::QUOTE_TAXONOMY_ID);
+                if ($ret) {
+                    $validatedTagList [] = $ret['term_id'];
+                } else {
+                    $errorTagList[] = $tag;
+                }
+            }
+            if (!empty($errorTagList)) {
+                $this->formValidationErrors['tags_error_msg'] = $formOptions['tags']['validation_error_message'];
+                $this->formValidationErrors[ 'tags_error_value' ] = (join(', ', $errorTagList));
+            }
+            //tags validated list
+            $instance['tags'] = array_unique($validatedTagList);
+
+        }
+
+        return $instance;
+    }
 
     /**
      * ADMIN ONLY
