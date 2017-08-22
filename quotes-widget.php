@@ -9,7 +9,7 @@ with some custom fields editable like any other pages or articles
 Version: 1.0
 Author: François Chastanet
 Author URI: https://github.com/meilleur-monde
-License: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+License: LGPL-3.0
 */
 
 // If this file is called directly, abort.
@@ -21,6 +21,10 @@ use Timber\Post;
 use Timber\Timber;
 
 require_once(ABSPATH.'wp-admin/includes/plugin.php');
+
+
+// I18N
+load_plugin_textdomain( QuotesWidget::PLUGIN_DOMAIN, FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
 
 /**
  *  Activation Class
@@ -45,15 +49,16 @@ if ( ! class_exists( 'BetterWorld\\QuotesWidgetInstallCheck' ) ) {
             //check for plugin dependencies
             $deactivatePlugin = [];
             if (!is_plugin_active('timber-library/timber.php')) {
-                $deactivatePlugin[] = __('timber-library', QuotesWidget::PLUGIN_NAME);
+                $deactivatePlugin[] = _x('timber-library', 'Installation plugin name', QuotesWidget::PLUGIN_DOMAIN);
             }
             if (!is_plugin_active('better-world-utilities-library/utilities.php')) {
-                $deactivatePlugin[] = __('better-world-library', QuotesWidget::PLUGIN_NAME);
+                $deactivatePlugin[] = _x('better-world-library', 'Installation plugin name', QuotesWidget::PLUGIN_DOMAIN);
             }
             if (!empty($deactivatePlugin)) {
                 deactivate_plugins(__FILE__, true);
                 delete_option(QuotesWidget::PLUGIN_ACTIVATED_OPTION_NAME);
-                $msg  = __('plugin ' . QuotesWidget::PLUGIN_ID . ' has been deactivated because it needs the following plugins : ', QuotesWidget::PLUGIN_NAME);
+                $msg  = sprintf(_x('the plugin %1$s has been deactivated because it needs the following plugins : ',
+                    'Installation', QuotesWidget::PLUGIN_DOMAIN), QuotesWidget::PLUGIN_NAME);
                 $msg .= join(', ', $deactivatePlugin );
                 self::displayNotice($msg);
             }
@@ -67,7 +72,8 @@ if ( ! class_exists( 'BetterWorld\\QuotesWidgetInstallCheck' ) ) {
 
                 //ensure rewrite rules are flush after registering the new custom type
                 flush_rewrite_rules();
-                $msg  = __('plugin ' . QuotesWidget::PLUGIN_ID . ', the rewrite rules have been flushed after registering the new custom type Quote', QuotesWidget::PLUGIN_NAME);
+                $msg  = sprintf(_x('plugin %1$s, the rewrite rules have been flushed after registering the new custom type Quote',
+                    'Installation', QuotesWidget::PLUGIN_DOMAIN), QuotesWidget::PLUGIN_NAME);
                 self::displayNotice($msg, 'notice notice-info');
             }
         }
@@ -90,11 +96,17 @@ add_action('widgets_init', [QuotesWidget::class, 'registerWidget'] );
 
 class QuotesWidget extends \WP_Widget {
     const PLUGIN_ID = 'better_world_quotes_widget';
+    const PLUGIN_DOMAIN = 'quotes-widget';
     const PLUGIN_ACTIVATED_OPTION_NAME = 'Activated_Plugin_better_world_quotes_widget';
     const PLUGIN_NAME = 'Better World Quotes Widget';
     const QUOTE_CUSTOM_TYPE_ID = 'quote';
     const QUOTE_TAXONOMY_ID = 'quote-taxonomy';
     const PLUGIN_VERSION = '1.0';
+    const QUOTE_MAX_LENGTH = 500;
+    const QUOTE_AUTHOR_MAX_LENGTH = 250;
+    const QUOTE_SOURCE_MAX_LENGTH = 250;
+    const REFRESH_INTERVAL_MIN_VALUE = 1;
+    const REFRESH_INTERVAL_MAX_VALUE = 60;
 
     /**
      * @var array contains the args to use for rendering the inline javascript part
@@ -116,11 +128,8 @@ class QuotesWidget extends \WP_Widget {
         $id_base = self::PLUGIN_ID;
         $name = self::PLUGIN_NAME;
         $description = [
-            'description' => _x(
-                'display quotes created via custom type quote',
-                $context = 'widget description',
-                $domain = 'quotes-collection'
-            ),
+            'description' =>
+                _x('display quotes created via custom type quote', 'widget description', self::PLUGIN_DOMAIN),
         ];
 
         if (Utilities::isFrontEnd() || Utilities::isAdminCustomizationEnabled()) {
@@ -229,25 +238,27 @@ class QuotesWidget extends \WP_Widget {
     public function registerQuoteCustomType()
     {
         $labels = [
-            'name' => _x('Quotes', 'post type general name', self::QUOTE_CUSTOM_TYPE_ID),
-            'singular_name' => _x('Quote', 'post type singular name', self::QUOTE_CUSTOM_TYPE_ID),
-            'name_admin_bar' => _x('Quote', 'add new on admin bar', self::QUOTE_CUSTOM_TYPE_ID),
-            'menu_name' => _x('Quotes', 'admin menu', self::QUOTE_CUSTOM_TYPE_ID),
-            'add_new' => _x('Add', 'Quote', self::QUOTE_CUSTOM_TYPE_ID),
-            'add_new_item' => __('Add a new Quote', self::QUOTE_CUSTOM_TYPE_ID),
-            'new_item' => __('New Quote', self::QUOTE_CUSTOM_TYPE_ID),
-            'edit_item' => __('Update the Quote', self::QUOTE_CUSTOM_TYPE_ID),
-            'view_item' => __('See quote', self::QUOTE_CUSTOM_TYPE_ID),
-            'search_items' => __('Search a quote', self::QUOTE_CUSTOM_TYPE_ID),
-            'not_found' => __('No quote found', self::QUOTE_CUSTOM_TYPE_ID),
-            'not_found_in_trash' => __('No quote found in the trash', self::QUOTE_CUSTOM_TYPE_ID),
-            'parent_item_colon' => __('Parent quote', self::QUOTE_CUSTOM_TYPE_ID),
-            'all_items' => __('All Quotes', self::QUOTE_CUSTOM_TYPE_ID),
+            'name' => _x('Quotes', 'Quote post type general name', self::PLUGIN_DOMAIN),
+            'singular_name' => _x('Quote', 'Quote post type singular name', self::PLUGIN_DOMAIN),
+            'name_admin_bar' => _x('Quote', 'Quote post type add new on admin bar', self::PLUGIN_DOMAIN),
+            'menu_name' => _x('Quotes', 'Quote post type admin menu', self::PLUGIN_DOMAIN),
+            'add_new' => _x('Add', 'Quote post type', self::PLUGIN_DOMAIN),
+            'add_new_item' => _x('Add a new Quote', 'Quote post type', self::PLUGIN_DOMAIN),
+            'new_item' => _x('New Quote', 'Quote post type', self::PLUGIN_DOMAIN),
+            'edit_item' => _x('Update the Quote', 'Quote post type', self::PLUGIN_DOMAIN),
+            'view_item' => _x('See quote', 'Quote post type', self::PLUGIN_DOMAIN),
+            'search_items' => _x('Search a quote', 'Quote post type', self::PLUGIN_DOMAIN),
+            'not_found' => _x('No quote found', 'Quote post type', self::PLUGIN_DOMAIN),
+            'not_found_in_trash' => _x('No quote found in the trash', 'Quote post type', self::PLUGIN_DOMAIN),
+            'parent_item_colon' => _x('Parent quote', 'Quote post type', self::PLUGIN_DOMAIN),
+            'all_items' => _x('All Quotes', 'Quote post type', self::PLUGIN_DOMAIN),
         ];
 
         $args = [
             'labels' => $labels,
-            'description' => __('Create a quote that can be displayed using '.self::PLUGIN_NAME, self::QUOTE_CUSTOM_TYPE_ID),
+            'description' => sprintf(_x('Create a quote that can be displayed using the widget %1$s',
+                'Quote post type description (%1$s widget name)', self::PLUGIN_DOMAIN),
+                self::PLUGIN_NAME),
             'publicly_queryable' => false,
             'exclude_from_search' => true,
             'capability_type' => 'post',//['quote', 'quotes'], not working
@@ -271,22 +282,23 @@ class QuotesWidget extends \WP_Widget {
 
         if (!taxonomy_exists(self::QUOTE_TAXONOMY_ID)) {
             $labels = array(
-                'name'                       => _x( 'Quote Tag', 'taxonomy general name', self::QUOTE_CUSTOM_TYPE_ID ),
-                'singular_name'              => _x( 'Quote Tag', 'taxonomy singular name', self::QUOTE_CUSTOM_TYPE_ID ),
-                'search_items'               => __( 'Search Quotes Tag', self::QUOTE_CUSTOM_TYPE_ID ),
-                'popular_items'              => __( 'Popular Quotes Tag', self::QUOTE_CUSTOM_TYPE_ID ),
-                'all_items'                  => __( 'All Quotes Tag', self::QUOTE_CUSTOM_TYPE_ID ),
+                'name'                       => _x( 'Quote Tag', 'Quote post type taxonomy general name', self::PLUGIN_DOMAIN ),
+                'singular_name'              => _x( 'Quote Tag', 'Quote post type taxonomy singular name', self::PLUGIN_DOMAIN ),
+                'search_items'               => _x( 'Search Quote Tags', 'Quote post type taxonomy', self::PLUGIN_DOMAIN ),
+                'popular_items'              => _x( 'Popular Quote Tags', 'Quote post type taxonomy', self::PLUGIN_DOMAIN ),
+                'all_items'                  => _x( 'All Quote Tags', 'Quote post type taxonomy', self::PLUGIN_DOMAIN ),
                 'parent_item'                => null,
                 'parent_item_colon'          => null,
-                'edit_item'                  => __( 'Edit Quote Tag', self::QUOTE_CUSTOM_TYPE_ID ),
-                'update_item'                => __( 'Update Quote Tag', self::QUOTE_CUSTOM_TYPE_ID ),
-                'add_new_item'               => __( 'Add New Quote Tag', self::QUOTE_CUSTOM_TYPE_ID ),
-                'new_item_name'              => __( 'New Quote Tag Name', self::QUOTE_CUSTOM_TYPE_ID ),
-                'separate_items_with_commas' => __( 'Separate Quote Tag with commas', self::QUOTE_CUSTOM_TYPE_ID ),
-                'add_or_remove_items'        => __( 'Add or remove Quote Tags', self::QUOTE_CUSTOM_TYPE_ID ),
-                'choose_from_most_used'      => __( 'Choose from the most used Quote Tags', self::QUOTE_CUSTOM_TYPE_ID ),
-                'not_found'                  => __( 'No Quote Tags  found.', self::QUOTE_CUSTOM_TYPE_ID ),
-                'menu_name'                  => __( 'Quote Tags', self::QUOTE_CUSTOM_TYPE_ID ),
+                'edit_item'                  => _x( 'Edit Quote Tag', 'Quote post type taxonomy', self::PLUGIN_DOMAIN ),
+                'update_item'                => _x( 'Update Quote Tag', 'Quote post type taxonomy', self::PLUGIN_DOMAIN ),
+                'add_new_item'               => _x( 'Add New Quote Tag', 'Quote post type taxonomy', self::PLUGIN_DOMAIN ),
+                'new_item_name'              => _x( 'New Quote Tag Name', 'Quote post type taxonomy', self::PLUGIN_DOMAIN ),
+                'separate_items_with_commas' => _x( 'Separate Quote Tag with commas', 'instructions in order to fill tags list field',
+                    'Quote post type taxonomy', self::PLUGIN_DOMAIN ),
+                'add_or_remove_items'        => _x( 'Add or remove Quote Tags', 'Quote post type taxonomy', self::PLUGIN_DOMAIN ),
+                'choose_from_most_used'      => _x( 'Choose from the most used Quote Tags', 'Quote post type taxonomy', self::PLUGIN_DOMAIN ),
+                'not_found'                  => _x( 'No Quote Tags  found.', 'Quote post type taxonomy', self::PLUGIN_DOMAIN ),
+                'menu_name'                  => _x( 'Quote Tags', 'Quote post type taxonomy', self::PLUGIN_DOMAIN ),
             );
 
             $args = array(
@@ -319,7 +331,7 @@ class QuotesWidget extends \WP_Widget {
             'id' => 'quote',
 
             // Meta box title - Will appear at the drag and drop handle bar. Required.
-            'title' => __( 'Quote Fields', self::QUOTE_CUSTOM_TYPE_ID ),
+            'title' => _x( 'Quote Fields', 'Quote post type fields', self::PLUGIN_DOMAIN ),
 
             // Post types, accept custom post types as well - DEFAULT is array('post'). Optional.
             'pages' => array( self::QUOTE_CUSTOM_TYPE_ID ),
@@ -337,9 +349,12 @@ class QuotesWidget extends \WP_Widget {
             'fields' => array(
                 // Citation
                 array(
-                    'name'  => __( 'Quote', self::QUOTE_CUSTOM_TYPE_ID ),
+                    'name'  => _x( 'Quote', 'Quote post type fields Name field', self::PLUGIN_DOMAIN ),
                     'id'    => "{$prefix}_quote",
-                    'desc'  => __( "Quote that will be displayed (title is just for reference, not used in rendering)", self::QUOTE_CUSTOM_TYPE_ID ),
+                    'desc'  => _x(
+                        'title will be used to calculate the slug but not used in rendering',
+                        'Quote post type fields description below title', self::PLUGIN_DOMAIN
+                    ),
                     'type'  => 'textarea',
                     'std'   => '', //default value
                     'clone' => false,
@@ -350,9 +365,9 @@ class QuotesWidget extends \WP_Widget {
 
                 // Auteur
                 array(
-                    'name'  => _x( 'Author', 'Quote Author', self::QUOTE_CUSTOM_TYPE_ID ),
+                    'name'  => _x( 'Author', 'Quote post type fields author', self::PLUGIN_DOMAIN ),
                     'id'    => "{$prefix}_quote_author",
-                    'desc'  => __( "The author of the quote (facultative)", self::QUOTE_CUSTOM_TYPE_ID ),
+                    'desc'  => _x( "The author of the quote (facultative)", 'Quote post type fields', self::PLUGIN_DOMAIN ),
                     'type'  => 'text',
                     'std'   => '', //default value
                     'clone' => false,
@@ -361,9 +376,10 @@ class QuotesWidget extends \WP_Widget {
 
                 // Source
                 array(
-                    'name'  => _x( 'Source', 'Quote Source', self::QUOTE_CUSTOM_TYPE_ID ),
+                    'name'  => _x( 'Source', 'Quote post type fields source', self::PLUGIN_DOMAIN ),
                     'id'    => "{$prefix}_quote_source",
-                    'desc'  => __( "The source of the quote (facultative) - can be an url or book reference, ...", self::QUOTE_CUSTOM_TYPE_ID ),
+                    'desc'  => _x( "The source of the quote (facultative) - can be an url or book reference, ...",
+                        'Quote post type fields source description', self::PLUGIN_DOMAIN ),
                     'type'  => 'text',
                     'std'   => '', //default value
                     'clone' => false,
@@ -374,28 +390,34 @@ class QuotesWidget extends \WP_Widget {
                 'rules' => array(
                     "{$prefix}_quote" => array(
                         'required'  => true,
-                        'maxlength' => 500,
+                        'maxlength' => self::QUOTE_MAX_LENGTH,
                     ),
                     "{$prefix}_quote_author" => array(
                         'required'  => false,
-                        'maxlength' => 250,
+                        'maxlength' => self::QUOTE_AUTHOR_MAX_LENGTH,
                     ),
                     "{$prefix}_quote_source" => array(
                         'required'  => false,
-                        'maxlength' => 250,
+                        'maxlength' => self::QUOTE_SOURCE_MAX_LENGTH,
                     ),
                 ),
                 // optional override of default jquery.validate messages
                 'messages' => array(
                     "{$prefix}_quote" => array(
-                        'required'  => __( 'Quote is mandatory', self::QUOTE_CUSTOM_TYPE_ID ),
-                        'maxlength' => __( 'Quote length is limited to 500 characters', self::QUOTE_CUSTOM_TYPE_ID ),
+                        'required'  => __( 'Quote is mandatory', 'Quote post type fields validation rule quote required', self::PLUGIN_DOMAIN ),
+                        'maxlength' => sprintf(_x( 'Quote length is limited to %1$d characters', '%1$d is an int',
+                            'Quote post type fields validation rule quote max length', self::PLUGIN_DOMAIN ),
+                            self::QUOTE_MAX_LENGTH),
                     ),
                     "{$prefix}_quote_author" => array(
-                        'maxlength' => __( 'Quote Author length is limited to 250 characters', self::QUOTE_CUSTOM_TYPE_ID ),
+                        'maxlength' => sprintf(_x( 'Quote Author length is limited to %1$d characters', '%1$d is an int',
+                            'Quote post type fields validation rule author max length', self::PLUGIN_DOMAIN ),
+                            self::QUOTE_AUTHOR_MAX_LENGTH),
                     ),
                     "{$prefix}_quote_source" => array(
-                        'maxlength' => __( 'Quote Source length is limited to 250 characters', self::QUOTE_CUSTOM_TYPE_ID ),
+                        'maxlength' => sprintf(_x( 'Quote Source length is limited to %1$d characters',
+                            'Quote post type fields validation rule source %1$d is an int', self::PLUGIN_DOMAIN ),
+                            self::QUOTE_SOURCE_MAX_LENGTH),
                     ),
                 )
             )
@@ -417,7 +439,7 @@ class QuotesWidget extends \WP_Widget {
      */
     public function addColumnsToQuotesList($defaults) {
         $prefix = self::QUOTE_CUSTOM_TYPE_ID;
-        $defaults[$prefix.'_quote'] = _x('Quote', 'Quote List column', self::QUOTE_CUSTOM_TYPE_ID);
+        $defaults[$prefix.'_quote'] = _x('Quote', 'Quote List column', self::PLUGIN_DOMAIN);
 
         //sort the columns
         uksort($defaults, function ($a, $b) use ($prefix) {
@@ -447,54 +469,64 @@ class QuotesWidget extends \WP_Widget {
     {
         return [
             'title' => [
-                'label' => __( 'Title', self::PLUGIN_ID ),
-                'defaultValue' => __('Quotes Widget', self::PLUGIN_ID),
+                'label' => _x( 'Title', 'Quote widget form title of the widget', self::PLUGIN_DOMAIN ),
+                'defaultValue' => _x('Quotes Widget', 'Quote widget form default title of the widget', self::PLUGIN_DOMAIN ),
             ],
             'show_author' => [
-                'label' => __( 'Show author?', self::PLUGIN_ID ),
+                'label' => _x( 'Show author?', 'Quote widget form', self::PLUGIN_DOMAIN ),
                 'defaultValue' => 1,
             ],
             'show_source' => [
-                'label' => __( 'Show source?', self::PLUGIN_ID ),
+                'label' => _x( 'Show source?', 'Quote widget form', self::PLUGIN_DOMAIN ),
                 'defaultValue' => 0,
             ],
             'ajax_refresh' => [
-                'label' => __( 'Show a refresh button', self::PLUGIN_ID ),
+                'label' => _x( 'Show a refresh button', 'Quote widget form', self::PLUGIN_DOMAIN ),
                 'defaultValue' => 1,
             ],
             'auto_refresh' => [
-                'label' => __( 'Auto refresh', self::PLUGIN_ID ),
-                'description' => __('if auto refresh activated, loop on quotes after a delay specified below', self::PLUGIN_ID),
+                'label' => _x( 'Auto refresh', 'Quote widget form', self::PLUGIN_DOMAIN ),
+                'description' => _x('if auto refresh activated, loop on quotes every n seconds',
+                    'Quote widget form', self::PLUGIN_DOMAIN),
                 'defaultValue' => 0,
             ],
             'refresh_interval' => [
-                'label' => __( 'if auto refresh activated, refresh automatically after this delay (in seconds)', self::PLUGIN_ID ),
-                'refresh_link_text'   => __('Refresh', self::PLUGIN_ID),
-                'min' => 1,
-                'max' => 60,
+                'label' => _x( 'if auto refresh activated, refresh automatically after this delay (in seconds)',
+                    'Quote widget form', self::PLUGIN_DOMAIN ),
+                'refresh_link_text'   => _x('Refresh', 'Quote widget form Refresh button/link label', self::PLUGIN_DOMAIN),
+                'min' => self::REFRESH_INTERVAL_MIN_VALUE,
+                'max' => self::REFRESH_INTERVAL_MAX_VALUE,
                 'step' => 1,
                 'defaultValue' => 5,
                 'validation_error_message' =>
-                    __('<strong>Warning : </strong> default value restored because entered refresh interval is invalid(value should be between 1 to 60)', self::PLUGIN_ID),
+                    sprintf(
+                        _x('<strong>Warning : </strong> default value restored because entered refresh interval is invalid(value should be between %1$d to %2$d)',
+                            'Quote widget form', self::PLUGIN_DOMAIN),
+                        self::REFRESH_INTERVAL_MIN_VALUE,
+                        self::REFRESH_INTERVAL_MAX_VALUE
+                    ),
             ],
             'random_refresh' => [
-                'label' => __( 'Random refresh', self::PLUGIN_ID ),
-                'description' => __('if auto refresh activated, it will rotate quotes randomly, otherwise in the order added, latest first.', self::PLUGIN_ID),
+                'label' => _x( 'Random refresh', 'Quote widget form', self::PLUGIN_DOMAIN ),
+                'description' => _x('if activated next quote will be chosen randomly, otherwise in the order added, latest first.',
+                    'Quote widget form random refresh description', self::PLUGIN_DOMAIN),
                 'defaultValue' => 1,
             ],
             'tags' => [
-                'label' => __( 'Tags filter (comma separated)', self::PLUGIN_ID ),
+                'label' => _x( 'Tags filter (comma separated)', 'Quote widget form', self::PLUGIN_DOMAIN ),
                 'defaultValue' => '',
                 'validation_error_message' =>
-                    __('<strong>Warning : </strong>Following tags doesn\'t exist and have been removed', self::PLUGIN_ID),
+                    _x('<strong>Warning : </strong>Following tags doesn\'t exist and have been removed',
+                        'Quote widget form', self::PLUGIN_DOMAIN),
             ],
             'char_limit' => [
-                'label' => __( 'Character limit (0 for unlimited)', self::PLUGIN_ID ),
+                'label' => _x( 'Character limit (0 for unlimited)', 'Quote widget form', self::PLUGIN_DOMAIN ),
                 'min' => 0,
                 'step' => 1,
                 'defaultValue' => 500,
                 'validation_error_message' =>
-                    __('<strong>Warning : </strong> default value restored because entered char limit is invalid(value should be between 0 to 500)', self::PLUGIN_ID),
+                    _x('<strong>Warning : </strong> default value restored because entered char limit is invalid(value should be greater or equal to 0)',
+                        'Quote widget form', self::PLUGIN_DOMAIN),
             ],
         ];
     }
@@ -608,9 +640,6 @@ class QuotesWidget extends \WP_Widget {
 
         $options = array_merge($options, $instance);
 
-        if( isset( $options['char_limit'] ) && !is_numeric( $options['char_limit'] ) ) {
-            $options['char_limit'] = __('none', self::PLUGIN_ID);
-        }
         //convert tags array to string
         if( isset( $options['tags'] )) {
             $tags = '';
@@ -719,8 +748,10 @@ class QuotesWidget extends \WP_Widget {
             ],
             //translated strings
             'jsLocalizationArgs' => [
-                'loading'          => __('Loading...', self::PLUGIN_ID),
-                'error'            => __('Error getting quote', self::PLUGIN_ID),
+                'loading'          => _x('Loading...',
+                    'frontend displayed when the refresh button/link is clicked', self::PLUGIN_DOMAIN),
+                'error'            => _x('Error getting quote',
+                    'frontend displayed when an error coccured when the refresh button/link is clicked', self::PLUGIN_DOMAIN),
             ],
             //for plugin customization purpose
             'everything' => $renderArgs,

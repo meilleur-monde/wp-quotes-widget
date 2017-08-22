@@ -1,0 +1,406 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: better-world-quotes-widget\n"
+"POT-Creation-Date: 2017-08-22 23:39+0200\n"
+"PO-Revision-Date: 2017-08-22 23:42+0200\n"
+"Last-Translator: \n"
+"Language-Team: Meilleur Monde\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.3\n"
+"X-Poedit-Basepath: ..\n"
+"X-Textdomain-Support: yes\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c;_nc:4c,1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c;"
+"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-Flags-xgettext: --language=PHP --add-comments=TRANSLATORS: --add-"
+"comments=translators:\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: quotes-widget.php:54
+msgctxt "Installation plugin name"
+msgid "timber-library"
+msgstr "timber-library"
+
+#: quotes-widget.php:57
+msgctxt "Installation plugin name"
+msgid "better-world-library"
+msgstr "better-world-library"
+
+#: quotes-widget.php:62
+#, php-format
+msgctxt "Installation"
+msgid ""
+"the plugin %1$s has been deactivated because it needs the following "
+"plugins : "
+msgstr ""
+"L'extension %1$s a été désactivée car elle nécessite l'installation des "
+"plugins suivants:"
+
+#: quotes-widget.php:77
+#, php-format
+msgctxt "Installation"
+msgid ""
+"plugin %1$s, the rewrite rules have been flushed after registering the new "
+"custom type Quote"
+msgstr ""
+"Extension %1$s, les règles de réécritures d'urls ont été réinitialisées "
+"suite à l'enregistrement de Citation, le nouveau type de contenu personnalisé"
+
+#: quotes-widget.php:134
+msgctxt "widget description"
+msgid "display quotes created via custom type quote"
+msgstr "affiche les citations créées depuis les types de contenu personnalisé"
+
+#: quotes-widget.php:243
+msgctxt "Quote post type general name"
+msgid "Quotes"
+msgstr "Citations"
+
+#: quotes-widget.php:244
+msgctxt "Quote post type singular name"
+msgid "Quote"
+msgstr "Citation"
+
+#: quotes-widget.php:245
+msgctxt "Quote post type add new on admin bar"
+msgid "Quote"
+msgstr "Citation"
+
+#: quotes-widget.php:246
+msgctxt "Quote post type admin menu"
+msgid "Quotes"
+msgstr "Citations"
+
+#: quotes-widget.php:247
+msgctxt "Quote post type"
+msgid "Add"
+msgstr "Ajouter"
+
+#: quotes-widget.php:248
+msgctxt "Quote post type"
+msgid "Add a new Quote"
+msgstr "Ajouter une nouvelle citation"
+
+#: quotes-widget.php:249
+msgctxt "Quote post type"
+msgid "New Quote"
+msgstr "Nouvelle citation"
+
+#: quotes-widget.php:250
+msgctxt "Quote post type"
+msgid "Update the Quote"
+msgstr "Mettre à jour la citation"
+
+#: quotes-widget.php:251
+msgctxt "Quote post type"
+msgid "See quote"
+msgstr "Voir la citation"
+
+#: quotes-widget.php:252
+msgctxt "Quote post type"
+msgid "Search a quote"
+msgstr "Rechercher une citation"
+
+#: quotes-widget.php:253
+msgctxt "Quote post type"
+msgid "No quote found"
+msgstr "Aucune citation trouvée"
+
+#: quotes-widget.php:254
+msgctxt "Quote post type"
+msgid "No quote found in the trash"
+msgstr "Aucune citation trouvée dans la corbeille"
+
+#: quotes-widget.php:255
+msgctxt "Quote post type"
+msgid "Parent quote"
+msgstr "Citation parente"
+
+#: quotes-widget.php:256
+msgctxt "Quote post type"
+msgid "All Quotes"
+msgstr "Toutes les citations"
+
+#: quotes-widget.php:261
+#, php-format
+msgctxt "Quote post type description (%1$s widget name)"
+msgid "Create a quote that can be displayed using the widget %1$s"
+msgstr ""
+"Créer une citation qui pourra être affichée en utilisant le widget %1$s"
+
+#: quotes-widget.php:287
+msgctxt "Quote post type taxonomy general name"
+msgid "Quote Tag"
+msgstr "Etiquette de citation"
+
+#: quotes-widget.php:288
+msgctxt "Quote post type taxonomy singular name"
+msgid "Quote Tag"
+msgstr "Etiquette de citation"
+
+#: quotes-widget.php:289
+msgctxt "Quote post type taxonomy"
+msgid "Search Quote Tags"
+msgstr "Rechercher une étiquette de citation"
+
+#: quotes-widget.php:290
+msgctxt "Quote post type taxonomy"
+msgid "Popular Quote Tags"
+msgstr "Etiquettes de citation populaires"
+
+#: quotes-widget.php:291
+msgctxt "Quote post type taxonomy"
+msgid "All Quote Tags"
+msgstr "Toutes les étiquettes de citation"
+
+#: quotes-widget.php:294
+msgctxt "Quote post type taxonomy"
+msgid "Edit Quote Tag"
+msgstr "Editer une étiquette de citation"
+
+#: quotes-widget.php:295
+msgctxt "Quote post type taxonomy"
+msgid "Update Quote Tag"
+msgstr "Mettre à jour une étiquette de citation"
+
+#: quotes-widget.php:296
+msgctxt "Quote post type taxonomy"
+msgid "Add New Quote Tag"
+msgstr "Ajouter une étiquette de citation"
+
+#: quotes-widget.php:297
+msgctxt "Quote post type taxonomy"
+msgid "New Quote Tag Name"
+msgstr "Nouvelle étiquette de citation"
+
+#: quotes-widget.php:298
+msgctxt "instructions in order to fill tags list field"
+msgid "Separate Quote Tag with commas"
+msgstr "Séparez les étiquettes de citation par des virgules"
+
+#: quotes-widget.php:300
+msgctxt "Quote post type taxonomy"
+msgid "Add or remove Quote Tags"
+msgstr "Ajouter ou supprimer des étiquettes de citation"
+
+#: quotes-widget.php:301
+msgctxt "Quote post type taxonomy"
+msgid "Choose from the most used Quote Tags"
+msgstr "Choisir parmi les citations les plus utilisées"
+
+#: quotes-widget.php:302
+msgctxt "Quote post type taxonomy"
+msgid "No Quote Tags  found."
+msgstr "Aucune étiquette de citation trouvée"
+
+#: quotes-widget.php:303
+msgctxt "Quote post type taxonomy"
+msgid "Quote Tags"
+msgstr "Etiquette de citation"
+
+#: quotes-widget.php:336
+msgctxt "Quote post type fields"
+msgid "Quote Fields"
+msgstr "Champs additionnels sur la citation"
+
+#: quotes-widget.php:354
+msgctxt "Quote post type fields Name field"
+msgid "Quote"
+msgstr "Citation"
+
+#: quotes-widget.php:357
+msgctxt "Quote post type fields description below title"
+msgid "title will be used to calculate the slug but not used in rendering"
+msgstr ""
+"Le titre n'est utilisé que pour le calcul du permalien, il n'est normalement "
+"pas utilisé dans le rendu du widget"
+
+#: quotes-widget.php:370
+msgctxt "Quote post type fields author"
+msgid "Author"
+msgstr "Auteur"
+
+#: quotes-widget.php:372
+msgctxt "Quote post type fields"
+msgid "The author of the quote (facultative)"
+msgstr "L'auteur de la citation (facultatif)"
+
+#: quotes-widget.php:381
+msgctxt "Quote post type fields source"
+msgid "Source"
+msgstr "Source"
+
+#: quotes-widget.php:383
+msgctxt "Quote post type fields source description"
+msgid ""
+"The source of the quote (facultative) - can be an url or book reference, ..."
+msgstr ""
+"La source de la citation (facultatif) - peut être une url, une référence de "
+"livre, etc."
+
+#: quotes-widget.php:409
+msgid "Quote is mandatory"
+msgstr "Citation obligatoire"
+
+#: quotes-widget.php:410
+#, php-format
+msgctxt "%1$d is an int"
+msgid "Quote length is limited to %1$d characters"
+msgstr "La longueur de la citation est limitée à %1$d caractères"
+
+#: quotes-widget.php:415
+#, php-format
+msgctxt "%1$d is an int"
+msgid "Quote Author length is limited to %1$d characters"
+msgstr "La longueur de la citation est limitée à %1$d caractères"
+
+#: quotes-widget.php:420
+#, php-format
+msgctxt "Quote post type fields validation rule source %1$d is an int"
+msgid "Quote Source length is limited to %1$d characters"
+msgstr "La longueur de la citation est limitée à %1$d caractères"
+
+#: quotes-widget.php:444
+msgctxt "Quote List column"
+msgid "Quote"
+msgstr "Citation"
+
+#: quotes-widget.php:474
+msgctxt "Quote widget form title of the widget"
+msgid "Title"
+msgstr "Titre"
+
+#: quotes-widget.php:475
+msgctxt "Quote widget form default title of the widget"
+msgid "Quotes Widget"
+msgstr "Widget Citation"
+
+#: quotes-widget.php:478
+msgctxt "Quote widget form"
+msgid "Show author?"
+msgstr "Montrer l'auteur ?"
+
+#: quotes-widget.php:482
+msgctxt "Quote widget form"
+msgid "Show source?"
+msgstr "Montrer la source ?"
+
+#: quotes-widget.php:486
+msgctxt "Quote widget form"
+msgid "Show a refresh button"
+msgstr "Montrer le bouton rafraichissement"
+
+#: quotes-widget.php:490
+msgctxt "Quote widget form"
+msgid "Auto refresh"
+msgstr "Rafraichissement automatique"
+
+#: quotes-widget.php:491
+msgctxt "Quote widget form"
+msgid "if auto refresh activated, loop on quotes every n seconds"
+msgstr ""
+"si le rafraichissement automatique est activé, boucler sur chacune des "
+"citations toutes les n secondes"
+
+#: quotes-widget.php:496
+msgctxt "Quote widget form"
+msgid ""
+"if auto refresh activated, refresh automatically after this delay (in "
+"seconds)"
+msgstr ""
+"si le rafraichissement automatique est activé, boucler sur chacune des "
+"citations après ce délai (en secondes)"
+
+#: quotes-widget.php:498
+msgctxt "Quote widget form Refresh button/link label"
+msgid "Refresh"
+msgstr "Rafraichir"
+
+#: quotes-widget.php:505
+#, php-format
+msgctxt "Quote widget form"
+msgid ""
+"<strong>Warning : </strong> default value restored because entered refresh "
+"interval is invalid(value should be between %1$d to %2$d)"
+msgstr ""
+"<strong>Attention : </strong> valeur par défaut restaurée car l'intervalle "
+"de rafraichissement spécifié est invalide (la valeur doit être comprise "
+"entre %1$d et %2$d)"
+
+#: quotes-widget.php:512
+msgctxt "Quote widget form"
+msgid "Random refresh"
+msgstr "Rafraichissement automatique"
+
+#: quotes-widget.php:513
+msgctxt "Quote widget form random refresh description"
+msgid ""
+"if activated next quote will be chosen randomly, otherwise in the order "
+"added, latest first."
+msgstr ""
+"si activé, la prochaine citation sera choisie aléatoirement, sinon dans "
+"l'ordre inverse de création, la plus récente en première"
+
+#: quotes-widget.php:518
+msgctxt "Quote widget form"
+msgid "Tags filter (comma separated)"
+msgstr "Filtre sur les étiquettes de citation (séparées par des virgules)"
+
+#: quotes-widget.php:521
+msgctxt "Quote widget form"
+msgid ""
+"<strong>Warning : </strong>Following tags doesn't exist and have been removed"
+msgstr ""
+"<strong>Attention : </strong>les étiquettes suivantes n'existent pas et ont "
+"été supprimées"
+
+#: quotes-widget.php:525
+msgctxt "Quote widget form"
+msgid "Character limit (0 for unlimited)"
+msgstr "Limite sur le nombre de caractères (0 si illimité)"
+
+#: quotes-widget.php:530
+msgctxt "Quote widget form"
+msgid ""
+"<strong>Warning : </strong> default value restored because entered char "
+"limit is invalid(value should be greater or equal to 0)"
+msgstr ""
+"<strong>Attention : </strong> valeur par défaut restaurée car la limite du "
+"nombre de caractères spécifiée est invalide (la valeur doit être supérieure "
+"ou égale à 0)"
+
+#: quotes-widget.php:753
+msgctxt "frontend displayed when the refresh button/link is clicked"
+msgid "Loading..."
+msgstr "Chargement..."
+
+#: quotes-widget.php:755
+msgctxt ""
+"frontend displayed when an error coccured when the refresh button/link is "
+"clicked"
+msgid "Error getting quote"
+msgstr "Erreur lors de la récupération de la citation suivante"
+
+#~ msgctxt "taxonomy singular name"
+#~ msgid "Quote Tag"
+#~ msgstr "Etiquette de citation"
+
+#~ msgctxt "post type singular name"
+#~ msgid "Quote"
+#~ msgstr "Citation"
+
+#~ msgctxt "add new on admin bar"
+#~ msgid "Quote"
+#~ msgstr "Citation"
+
+#~ msgctxt "admin menu"
+#~ msgid "Quotes"
+#~ msgstr "Citations"
+
+#~ msgid "plugin "
+#~ msgstr "plugin "
