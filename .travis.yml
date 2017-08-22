@@ -48,13 +48,9 @@ before_script:
   - if [[ "$SNIFF" == "1" ]]; then cd $TRAVIS_BUILD_DIR; fi
   # After CodeSniffer install you should refresh your path.
   - if [[ "$SNIFF" == "1" ]]; then phpenv rehash; fi
-  # Install JSCS: JavaScript Code Style checker
-  # @link http://jscs.info/
-  - if [[ "$SNIFF" == "1" ]]; then npm install -g jscs; fi
-  # Install JSHint, a JavaScript Code Quality Tool
-  # @link http://jshint.com/docs/
-  - if [[ "$SNIFF" == "1" ]]; then npm install -g jshint; fi
-  - if [[ "$SNIFF" == "1" ]]; then wget https://develop.svn.wordpress.org/trunk/.jshintrc; fi
+  # Install ESLINT: JavaScript Code Style checker
+  # @link https://eslint.org/
+  - if [[ "$SNIFF" == "1" ]]; then npm install -g eslint eslint-config-wordpress; fi
   # Install stylelint
   - if [[ "$SNIFF" == "1" ]]; then npm install -g stylelint; fi
   - if [[ "$SNIFF" == "1" ]]; then npm install stylelint-config-wordpress; fi
@@ -66,10 +62,8 @@ before_script:
 script:
   # Search for PHP syntax errors.
   - if [[ "$SNIFF" == "1" ]]; then find . \( -name '*.php' \) -exec php -lf {} \;; fi
-  # Run the code through JSHint
-  - if [[ "$SNIFF" == "1" ]]; then jshint public/js/*.js; fi
-  # Run the code through JavaScript Code Style checker
-  - if [[ "$SNIFF" == "1" ]]; then jscs public/js/*.js; fi
+  # Run the code through eslint
+  - if [[ "$SNIFF" == "1" ]]; then eslint --config ./.eslintrc.js 'public/js/*.js' --quiet; fi
   # Run the code through stylelint checker
   - if [[ "$SNIFF" == "1" ]]; then stylelint --config ./.stylelint public/css/*.css admin/css/*.css; fi
   # WordPress Coding Standards
