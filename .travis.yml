@@ -61,11 +61,11 @@ before_script:
 # All commands must exit with code 0 on success. Anything else is considered failure.
 script:
   # Search for PHP syntax errors.
-  - if [[ "$SNIFF" == "1" ]]; then find . -name '*.php' -not -path "./node-modules/*" -not -path "./vendor/*" -exec php -lf {} \;; fi
+  - if [[ "$SNIFF" == "1" ]]; then npm run phplint --silent; fi
   # Run the code through eslint
-  - if [[ "$SNIFF" == "1" ]]; then eslint --config ./.eslintrc.js 'public/js/*.js' 'admin/js/*.js' --quiet; fi
+  - if [[ "$SNIFF" == "1" ]]; then npm run eslint --silent; fi
   # Run the code through stylelint checker
-  - if [[ "$SNIFF" == "1" ]]; then stylelint --config ./.stylelint public/css/*.css admin/css/*.css; fi
+  - if [[ "$SNIFF" == "1" ]]; then npm run stylelint --silent; fi
   # WordPress Coding Standards
       # @link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
       # @link http://pear.php.net/package/PHP_CodeSniffer/
@@ -75,7 +75,7 @@ script:
       # -n flag: Do not print warnings (shortcut for --warning-severity=0)
       # --standard: Use WordPress as the standard.
       # --extensions: Only sniff PHP files.
-  - if [[ "$SNIFF" == "1" ]]; then ./vendor/bin/phpcs --standard=Wordpress-Extra --extensions=php -p -s -v -n . --ignore=./node-modules/*,./vendor/*; fi
+  - if [[ "$SNIFF" == "1" ]]; then npm run phpcs --silent; fi
 
 notifications:
   email: false
