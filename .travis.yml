@@ -48,7 +48,7 @@ before_script:
   # Use the Git mirror of WordPress.
   - if [[ "$SNIFF" == "1" ]]; then git clone --depth=1 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_DEVELOP_DIR; fi
   #install
-  - if [[ "$SNIFF" == "1" ]]; then composer install fi
+  - if [[ "$SNIFF" == "1" ]]; then composer install; fi
   # After CodeSniffer install you should refresh your path.
   - if [[ "$SNIFF" == "1" ]]; then phpenv rehash; fi
   # Install ESLINT: JavaScript Code Style checker
