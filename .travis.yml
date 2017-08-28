@@ -61,7 +61,7 @@ before_script:
 # All commands must exit with code 0 on success. Anything else is considered failure.
 script:
   # Search for PHP syntax errors.
-  - if [[ "$SNIFF" == "1" ]]; then find . \( -name '*.php' -not -path "./node-modules/*" -not -path "$TRAVIS_BUILD_DIR/php-codesniffer/*" -not -path "$TRAVIS_BUILD_DIR/composer/*"\) -exec php -lf {} \;; fi
+  - if [[ "$SNIFF" == "1" ]]; then find . -name '*.php' -not -path "./node-modules/*" -not -path "$TRAVIS_BUILD_DIR/vendor/*" -not -path "$TRAVIS_BUILD_DIR/node-modules/*" -exec php -lf {} \;; fi
   # Run the code through eslint
   - if [[ "$SNIFF" == "1" ]]; then eslint --config $TRAVIS_BUILD_DIR/.eslintrc.js 'public/js/*.js' --quiet; fi
   # Run the code through stylelint checker
