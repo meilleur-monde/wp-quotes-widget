@@ -75,7 +75,7 @@ script:
       # -n flag: Do not print warnings (shortcut for --warning-severity=0)
       # --standard: Use WordPress as the standard.
       # --extensions: Only sniff PHP files.
-  - if [[ "$SNIFF" == "1" ]]; then $WP_DEVELOP_DIR/php-codesniffer/bin/phpcs --standard=Wordpress-Extra --extensions=php -p -s -v -n . --ignore=./node-modules/*,./php-codesniffer/*,./composer/*,./vendor/*; fi
+  - if [[ "$SNIFF" == "1" ]]; then vendor/php_codesniffer/bin/phpcs --standard=Wordpress-Extra --extensions=php -p -s -v -n . --ignore=./node-modules/*,./php-codesniffer/*,./composer/*,./vendor/*; fi
 
 notifications:
   email: false
