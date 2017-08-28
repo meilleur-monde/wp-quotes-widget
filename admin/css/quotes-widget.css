@@ -1,13 +1,14 @@
 .better_world_quotes_widget div.row {
-    font-size: 13px;
-    line-height: 1.5;
-    margin: 1em 0;
+	font-size: 13px;
+	line-height: 1.5;
+	margin: 1em 0;
 }
+
 .better_world_quotes_widget p.widget-error {
-    color: #f00;
+	color: #f00;
 }
 
 .better_world_quotes_widget .setting-description {
-    font-style: italic;
-    color:#999;
+	font-style: italic;
+	color:#999;
 }

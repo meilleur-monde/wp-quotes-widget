@@ -13,12 +13,15 @@
 	text-align: right;
 	margin-bottom: 1.4em;
 }
+
 .quotes-widget cite.author {
 	font-style: normal;
 }
+
 .quotes-widget cite.source {
 	font-style: italic;
 }
+
 .quotes-widget .nav-next {
 	float: none;
 	clear: both;
@@ -36,6 +39,7 @@ blockquote.quotes-widget {
 	font-size:1em;
 	box-shadow: none;
 }
+
 blockquote.quotes-widget::before,
 blockquote.quotes-widget::after {
 	content:'';
