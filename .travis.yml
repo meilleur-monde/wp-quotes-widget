@@ -7,7 +7,7 @@ sudo: false
 cache:
   directories:
     - node_modules
-    - php-codesniffer
+    - vendor
 
 #use Trusty linux version
 dist: precise
@@ -47,13 +47,8 @@ before_script:
   - mkdir -p $WP_DEVELOP_DIR
   # Use the Git mirror of WordPress.
   - if [[ "$SNIFF" == "1" ]]; then git clone --depth=1 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_DEVELOP_DIR; fi
-  # Install CodeSniffer for WordPress Coding Standards checks.
-  - if [[ "$SNIFF" == "1" && ! -f ./php-codesniffer/bin/phpcs ]]; then mkdir -p php-codesniffer && curl -L https://github.com/squizlabs/PHP_CodeSniffer/archive/master.tar.gz | tar xz --strip-components=1 -C php-codesniffer; fi
-  # Install WordPress Coding Standards.
-  - if [[ "$SNIFF" == "1" && ! -f ./wordpress-coding-standards/bin/phpcs.xml ]]; then mkdir -p wordpress-coding-standards && curl -L https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/archive/master.tar.gz | tar xz --strip-components=1 -C wordpress-coding-standards; fi
-  # Set install path for WordPress Coding Standards
-  # @link https://github.com/squizlabs/PHP_CodeSniffer/blob/4237c2fc98cc838730b76ee9cee316f99286a2a7/CodeSniffer.php#L1941
-  - if [[ "$SNIFF" == "1" ]]; then ./php-codesniffer/bin/phpcs --config-set installed_paths ./wordpress-coding-standards; fi
+  #install
+  - if [[ "$SNIFF" == "1" ]]; then composer install fi
   # After CodeSniffer install you should refresh your path.
   - if [[ "$SNIFF" == "1" ]]; then phpenv rehash; fi
   # Install ESLINT: JavaScript Code Style checker
@@ -66,11 +61,11 @@ before_script:
 # All commands must exit with code 0 on success. Anything else is considered failure.
 script:
   # Search for PHP syntax errors.
-  - if [[ "$SNIFF" == "1" ]]; then find . \( -name '*.php' -not -path "./node-modules/*" -not -path "./php-codesniffer/*" -not -path "./composer/*"\) -exec php -lf {} \;; fi
+  - if [[ "$SNIFF" == "1" ]]; then find . \( -name '*.php' -not -path "./node-modules/*" -not -path "$TRAVIS_BUILD_DIR/php-codesniffer/*" -not -path "$TRAVIS_BUILD_DIR/composer/*"\) -exec php -lf {} \;; fi
   # Run the code through eslint
-  - if [[ "$SNIFF" == "1" ]]; then eslint --config ./.eslintrc.js 'public/js/*.js' --quiet; fi
+  - if [[ "$SNIFF" == "1" ]]; then eslint --config $TRAVIS_BUILD_DIR/.eslintrc.js 'public/js/*.js' --quiet; fi
   # Run the code through stylelint checker
-  - if [[ "$SNIFF" == "1" ]]; then stylelint --config ./.stylelint public/css/*.css admin/css/*.css; fi
+  - if [[ "$SNIFF" == "1" ]]; then stylelint --config $TRAVIS_BUILD_DIR/.stylelint public/css/*.css admin/css/*.css; fi
   # WordPress Coding Standards
       # @link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
       # @link http://pear.php.net/package/PHP_CodeSniffer/
@@ -80,7 +75,7 @@ script:
       # -n flag: Do not print warnings (shortcut for --warning-severity=0)
       # --standard: Use WordPress as the standard.
       # --extensions: Only sniff PHP files.
-  - if [[ "$SNIFF" == "1" ]]; then $WP_DEVELOP_DIR/php-codesniffer/bin/phpcs -p -s -v -n . --ignore=./node-modules/*,./php-codesniffer/*,./composer/* --standard=./codesniffer.ruleset.xml --extensions=php; fi
+  - if [[ "$SNIFF" == "1" ]]; then $WP_DEVELOP_DIR/php-codesniffer/bin/phpcs --standard=Wordpress-Extra --extensions=php -p -s -v -n . --ignore=./node-modules/*,./php-codesniffer/*,./composer/*,./vendor/*; fi
 
 notifications:
   email: false
