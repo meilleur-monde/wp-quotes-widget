@@ -32,18 +32,18 @@
 
 /* Shortcode output */
 blockquote.quotes-widget {
-	border:0;
-	background:none;
-	padding:0;
-	margin:4em 2em;
-	font-size:1em;
+	border: 0;
+	background: none;
+	padding: 0;
+	margin: 4em 2em;
+	font-size: 1em;
 	box-shadow: none;
 }
 
-blockquote.quotes-widget::before,
-blockquote.quotes-widget::after {
-	content:'';
-	content:none;
+blockquote.quotes-widget:before,
+blockquote.quotes-widget:after {
+	content: "";
+	content: none;
 	margin: 0;
 	padding: 0;
 	position: relative;
