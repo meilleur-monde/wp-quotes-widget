@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: better-world-quotes-widget\n"
-"POT-Creation-Date: 2017-08-22 23:39+0200\n"
-"PO-Revision-Date: 2017-08-22 23:42+0200\n"
+"POT-Creation-Date: 2017-08-29 23:54+0200\n"
+"PO-Revision-Date: 2017-08-30 01:02+0200\n"
 "Last-Translator: \n"
 "Language-Team: Meilleur Monde\n"
 "Language: fr_FR\n"
@@ -21,221 +21,222 @@ msgstr ""
 "comments=translators:\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: quotes-widget.php:54
+#: class-quotes-widget-install-check.php:32
 msgctxt "Installation plugin name"
 msgid "timber-library"
 msgstr "timber-library"
 
-#: quotes-widget.php:57
+#: class-quotes-widget-install-check.php:35
 msgctxt "Installation plugin name"
 msgid "better-world-library"
 msgstr "better-world-library"
 
-#: quotes-widget.php:62
+#: class-quotes-widget-install-check.php:43
 #, php-format
 msgctxt "Installation"
 msgid ""
 "the plugin %1$s has been deactivated because it needs the following "
 "plugins : "
 msgstr ""
-"L'extension %1$s a été désactivée car elle nécessite l'installation des "
-"plugins suivants:"
+"l'extension %1$s a été désactivée car elle nécessite l'installation des "
+"plugins suivants: "
 
-#: quotes-widget.php:77
+#: class-quotes-widget-install-check.php:63
 #, php-format
 msgctxt "Installation"
 msgid ""
 "plugin %1$s, the rewrite rules have been flushed after registering the new "
 "custom type Quote"
 msgstr ""
-"Extension %1$s, les règles de réécritures d'urls ont été réinitialisées "
+"extension %1$s, les règles de réécritures d'urls ont été réinitialisées "
 "suite à l'enregistrement de Citation, le nouveau type de contenu personnalisé"
 
-#: quotes-widget.php:134
+#: class-quotes-widget.php:49
 msgctxt "widget description"
 msgid "display quotes created via custom type quote"
 msgstr "affiche les citations créées depuis les types de contenu personnalisé"
 
-#: quotes-widget.php:243
+#: class-quotes-widget.php:158
 msgctxt "Quote post type general name"
 msgid "Quotes"
 msgstr "Citations"
 
-#: quotes-widget.php:244
+#: class-quotes-widget.php:159
 msgctxt "Quote post type singular name"
 msgid "Quote"
 msgstr "Citation"
 
-#: quotes-widget.php:245
+#: class-quotes-widget.php:160
 msgctxt "Quote post type add new on admin bar"
 msgid "Quote"
 msgstr "Citation"
 
-#: quotes-widget.php:246
+#: class-quotes-widget.php:161
 msgctxt "Quote post type admin menu"
 msgid "Quotes"
 msgstr "Citations"
 
-#: quotes-widget.php:247
+#: class-quotes-widget.php:162
 msgctxt "Quote post type"
 msgid "Add"
 msgstr "Ajouter"
 
-#: quotes-widget.php:248
+#: class-quotes-widget.php:163
 msgctxt "Quote post type"
 msgid "Add a new Quote"
 msgstr "Ajouter une nouvelle citation"
 
-#: quotes-widget.php:249
+#: class-quotes-widget.php:164
 msgctxt "Quote post type"
 msgid "New Quote"
 msgstr "Nouvelle citation"
 
-#: quotes-widget.php:250
+#: class-quotes-widget.php:165
 msgctxt "Quote post type"
 msgid "Update the Quote"
 msgstr "Mettre à jour la citation"
 
-#: quotes-widget.php:251
+#: class-quotes-widget.php:166
 msgctxt "Quote post type"
 msgid "See quote"
 msgstr "Voir la citation"
 
-#: quotes-widget.php:252
+#: class-quotes-widget.php:167
 msgctxt "Quote post type"
 msgid "Search a quote"
 msgstr "Rechercher une citation"
 
-#: quotes-widget.php:253
+#: class-quotes-widget.php:168
 msgctxt "Quote post type"
 msgid "No quote found"
 msgstr "Aucune citation trouvée"
 
-#: quotes-widget.php:254
+#: class-quotes-widget.php:169
 msgctxt "Quote post type"
 msgid "No quote found in the trash"
 msgstr "Aucune citation trouvée dans la corbeille"
 
-#: quotes-widget.php:255
+#: class-quotes-widget.php:170
 msgctxt "Quote post type"
 msgid "Parent quote"
 msgstr "Citation parente"
 
-#: quotes-widget.php:256
+#: class-quotes-widget.php:171
 msgctxt "Quote post type"
 msgid "All Quotes"
 msgstr "Toutes les citations"
 
-#: quotes-widget.php:261
+#: class-quotes-widget.php:179
 #, php-format
 msgctxt "Quote post type description (%1$s widget name)"
 msgid "Create a quote that can be displayed using the widget %1$s"
 msgstr ""
 "Créer une citation qui pourra être affichée en utilisant le widget %1$s"
 
-#: quotes-widget.php:287
+#: class-quotes-widget.php:206
 msgctxt "Quote post type taxonomy general name"
 msgid "Quote Tag"
 msgstr "Etiquette de citation"
 
-#: quotes-widget.php:288
+#: class-quotes-widget.php:207
 msgctxt "Quote post type taxonomy singular name"
 msgid "Quote Tag"
 msgstr "Etiquette de citation"
 
-#: quotes-widget.php:289
+#: class-quotes-widget.php:208
 msgctxt "Quote post type taxonomy"
 msgid "Search Quote Tags"
 msgstr "Rechercher une étiquette de citation"
 
-#: quotes-widget.php:290
+#: class-quotes-widget.php:209
 msgctxt "Quote post type taxonomy"
 msgid "Popular Quote Tags"
 msgstr "Etiquettes de citation populaires"
 
-#: quotes-widget.php:291
+#: class-quotes-widget.php:210
 msgctxt "Quote post type taxonomy"
 msgid "All Quote Tags"
 msgstr "Toutes les étiquettes de citation"
 
-#: quotes-widget.php:294
+#: class-quotes-widget.php:213
 msgctxt "Quote post type taxonomy"
 msgid "Edit Quote Tag"
 msgstr "Editer une étiquette de citation"
 
-#: quotes-widget.php:295
+#: class-quotes-widget.php:214
 msgctxt "Quote post type taxonomy"
 msgid "Update Quote Tag"
 msgstr "Mettre à jour une étiquette de citation"
 
-#: quotes-widget.php:296
+#: class-quotes-widget.php:215
 msgctxt "Quote post type taxonomy"
 msgid "Add New Quote Tag"
 msgstr "Ajouter une étiquette de citation"
 
-#: quotes-widget.php:297
+#: class-quotes-widget.php:216
 msgctxt "Quote post type taxonomy"
 msgid "New Quote Tag Name"
 msgstr "Nouvelle étiquette de citation"
 
-#: quotes-widget.php:298
-msgctxt "instructions in order to fill tags list field"
+#: class-quotes-widget.php:218
+msgctxt ""
+"Quote post type taxonomy - instructions in order to fill tags list field"
 msgid "Separate Quote Tag with commas"
 msgstr "Séparez les étiquettes de citation par des virgules"
 
-#: quotes-widget.php:300
+#: class-quotes-widget.php:222
 msgctxt "Quote post type taxonomy"
 msgid "Add or remove Quote Tags"
 msgstr "Ajouter ou supprimer des étiquettes de citation"
 
-#: quotes-widget.php:301
+#: class-quotes-widget.php:223
 msgctxt "Quote post type taxonomy"
 msgid "Choose from the most used Quote Tags"
 msgstr "Choisir parmi les citations les plus utilisées"
 
-#: quotes-widget.php:302
+#: class-quotes-widget.php:224
 msgctxt "Quote post type taxonomy"
 msgid "No Quote Tags  found."
-msgstr "Aucune étiquette de citation trouvée"
+msgstr "Aucune étiquette de citation trouvée."
 
-#: quotes-widget.php:303
+#: class-quotes-widget.php:225
 msgctxt "Quote post type taxonomy"
 msgid "Quote Tags"
 msgstr "Etiquette de citation"
 
-#: quotes-widget.php:336
+#: class-quotes-widget.php:260
 msgctxt "Quote post type fields"
 msgid "Quote Fields"
 msgstr "Champs additionnels sur la citation"
 
-#: quotes-widget.php:354
+#: class-quotes-widget.php:278
 msgctxt "Quote post type fields Name field"
 msgid "Quote"
 msgstr "Citation"
 
-#: quotes-widget.php:357
+#: class-quotes-widget.php:281
 msgctxt "Quote post type fields description below title"
 msgid "title will be used to calculate the slug but not used in rendering"
 msgstr ""
-"Le titre n'est utilisé que pour le calcul du permalien, il n'est normalement "
+"le titre n'est utilisé que pour le calcul du permalien, il n'est normalement "
 "pas utilisé dans le rendu du widget"
 
-#: quotes-widget.php:370
+#: class-quotes-widget.php:294
 msgctxt "Quote post type fields author"
 msgid "Author"
 msgstr "Auteur"
 
-#: quotes-widget.php:372
+#: class-quotes-widget.php:296
 msgctxt "Quote post type fields"
 msgid "The author of the quote (facultative)"
 msgstr "L'auteur de la citation (facultatif)"
 
-#: quotes-widget.php:381
+#: class-quotes-widget.php:305
 msgctxt "Quote post type fields source"
 msgid "Source"
 msgstr "Source"
 
-#: quotes-widget.php:383
+#: class-quotes-widget.php:308
 msgctxt "Quote post type fields source description"
 msgid ""
 "The source of the quote (facultative) - can be an url or book reference, ..."
@@ -243,71 +244,74 @@ msgstr ""
 "La source de la citation (facultatif) - peut être une url, une référence de "
 "livre, etc."
 
-#: quotes-widget.php:409
+#: class-quotes-widget.php:336
+msgctxt "Quote post type fields validation rule quote required"
 msgid "Quote is mandatory"
 msgstr "Citation obligatoire"
 
-#: quotes-widget.php:410
+#: class-quotes-widget.php:343
 #, php-format
-msgctxt "%1$d is an int"
+msgctxt ""
+"Quote post type fields validation rule quote max length - %1$d is an int"
 msgid "Quote length is limited to %1$d characters"
 msgstr "La longueur de la citation est limitée à %1$d caractères"
 
-#: quotes-widget.php:415
+#: class-quotes-widget.php:354
 #, php-format
-msgctxt "%1$d is an int"
+msgctxt ""
+"Quote post type fields validation rule author max length - %1$d is an int"
 msgid "Quote Author length is limited to %1$d characters"
 msgstr "La longueur de la citation est limitée à %1$d caractères"
 
-#: quotes-widget.php:420
+#: class-quotes-widget.php:365
 #, php-format
 msgctxt "Quote post type fields validation rule source %1$d is an int"
 msgid "Quote Source length is limited to %1$d characters"
 msgstr "La longueur de la citation est limitée à %1$d caractères"
 
-#: quotes-widget.php:444
+#: class-quotes-widget.php:394
 msgctxt "Quote List column"
 msgid "Quote"
 msgstr "Citation"
 
-#: quotes-widget.php:474
+#: class-quotes-widget.php:435
 msgctxt "Quote widget form title of the widget"
 msgid "Title"
 msgstr "Titre"
 
-#: quotes-widget.php:475
+#: class-quotes-widget.php:436
 msgctxt "Quote widget form default title of the widget"
 msgid "Quotes Widget"
 msgstr "Widget Citation"
 
-#: quotes-widget.php:478
+#: class-quotes-widget.php:439
 msgctxt "Quote widget form"
 msgid "Show author?"
 msgstr "Montrer l'auteur ?"
 
-#: quotes-widget.php:482
+#: class-quotes-widget.php:443
 msgctxt "Quote widget form"
 msgid "Show source?"
 msgstr "Montrer la source ?"
 
-#: quotes-widget.php:486
+#: class-quotes-widget.php:447
 msgctxt "Quote widget form"
 msgid "Show a refresh button"
 msgstr "Montrer le bouton rafraichissement"
 
-#: quotes-widget.php:490
+#: class-quotes-widget.php:451
 msgctxt "Quote widget form"
 msgid "Auto refresh"
 msgstr "Rafraichissement automatique"
 
-#: quotes-widget.php:491
+#: class-quotes-widget.php:453
 msgctxt "Quote widget form"
 msgid "if auto refresh activated, loop on quotes every n seconds"
 msgstr ""
 "si le rafraichissement automatique est activé, boucler sur chacune des "
 "citations toutes les n secondes"
 
-#: quotes-widget.php:496
+#: class-quotes-widget.php:460
 msgctxt "Quote widget form"
 msgid ""
 "if auto refresh activated, refresh automatically after this delay (in "
@@ -316,12 +320,12 @@ msgstr ""
 "si le rafraichissement automatique est activé, boucler sur chacune des "
 "citations après ce délai (en secondes)"
 
-#: quotes-widget.php:498
+#: class-quotes-widget.php:463
 msgctxt "Quote widget form Refresh button/link label"
 msgid "Refresh"
 msgstr "Rafraichir"
 
-#: quotes-widget.php:505
+#: class-quotes-widget.php:472
 #, php-format
 msgctxt "Quote widget form"
 msgid ""
@@ -332,26 +336,26 @@ msgstr ""
 "de rafraichissement spécifié est invalide (la valeur doit être comprise "
 "entre %1$d et %2$d)"
 
-#: quotes-widget.php:512
+#: class-quotes-widget.php:480
 msgctxt "Quote widget form"
 msgid "Random refresh"
 msgstr "Rafraichissement automatique"
 
-#: quotes-widget.php:513
+#: class-quotes-widget.php:482
 msgctxt "Quote widget form random refresh description"
 msgid ""
 "if activated next quote will be chosen randomly, otherwise in the order "
 "added, latest first."
 msgstr ""
 "si activé, la prochaine citation sera choisie aléatoirement, sinon dans "
-"l'ordre inverse de création, la plus récente en première"
+"l'ordre inverse de création, la plus récente en première."
 
-#: quotes-widget.php:518
+#: class-quotes-widget.php:488
 msgctxt "Quote widget form"
 msgid "Tags filter (comma separated)"
 msgstr "Filtre sur les étiquettes de citation (séparées par des virgules)"
 
-#: quotes-widget.php:521
+#: class-quotes-widget.php:492
 msgctxt "Quote widget form"
 msgid ""
 "<strong>Warning : </strong>Following tags doesn't exist and have been removed"
@@ -359,12 +363,12 @@ msgstr ""
 "<strong>Attention : </strong>les étiquettes suivantes n'existent pas et ont "
 "été supprimées"
 
-#: quotes-widget.php:525
+#: class-quotes-widget.php:497
 msgctxt "Quote widget form"
 msgid "Character limit (0 for unlimited)"
 msgstr "Limite sur le nombre de caractères (0 si illimité)"
 
-#: quotes-widget.php:530
+#: class-quotes-widget.php:503
 msgctxt "Quote widget form"
 msgid ""
 "<strong>Warning : </strong> default value restored because entered char "
@@ -374,14 +378,14 @@ msgstr ""
 "nombre de caractères spécifiée est invalide (la valeur doit être supérieure "
 "ou égale à 0)"
 
-#: quotes-widget.php:753
+#: class-quotes-widget.php:733
 msgctxt "frontend displayed when the refresh button/link is clicked"
 msgid "Loading..."
 msgstr "Chargement..."
 
-#: quotes-widget.php:755
+#: class-quotes-widget.php:737
 msgctxt ""
-"frontend displayed when an error coccured when the refresh button/link is "
+"frontend displayed when an error occured when the refresh button/link is "
 "clicked"
 msgid "Error getting quote"
 msgstr "Erreur lors de la récupération de la citation suivante"
