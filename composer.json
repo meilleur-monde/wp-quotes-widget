@@ -5,6 +5,6 @@
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.1"
   },
   "post-install-cmd": [
-    "./vendor/bin/phpcs --config-set installed_paths $baseDir/vendor/wp-coding-standards/wpcs"
+    "php vendor/bin/phpcs --config-set installed_paths $baseDir/vendor/wp-coding-standards/wpcs"
   ]
 }
