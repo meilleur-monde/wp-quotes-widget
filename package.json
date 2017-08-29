@@ -14,7 +14,8 @@
     "phplint": "find . -name '*.php' -not -path './node-modules/*' -not -path './vendor/*' -exec php -lf {} ;",
     "stylelint": "node node_modules/stylelint/bin/stylelint.js --config ./.stylelint public/css/*.css admin/css/*.css",
     "eslint": "node node_modules/eslint/bin/eslint.js --config ./.eslintrc.js 'public/js/*.js' 'admin/js/*.js' --quiet",
-    "phpcs": "bash vendor/bin/phpcs --standard=Wordpress-Extra --extensions=php -p -s -v -n . --ignore='./node-modules/*,./vendor/*'"
+    "phpcs": "bash vendor/bin/phpcs --standard=./phpcs.xml",
+    "phpcbf": "bash vendor/bin/phpcbf --standard=./phpcs.xml"
   },
   "repository": {
     "type": "git",

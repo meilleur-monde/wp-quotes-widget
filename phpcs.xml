@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset>
+    <arg name="extensions" value="php"/>
+    <arg value="s"/>
+    <file>./admin</file>
+    <file>./public</file>
+    <file>./quotes-widget.php</file>
+    <file>./class-quotes-widget.php</file>
+    <file>./class-quotes-widget-install-check.php</file>
+    <exclude-pattern type="relative">^/node-modules/*</exclude-pattern>
+    <exclude-pattern type="relative">^/vendor/*</exclude-pattern>
+    <rule ref="WordPress-Extra">
+        <!-- removes error like
+            The $domain arg must be a single string literal, not
+                 "self::PLUGIN_DOMAIN". (WordPress.WP.I18n.NonSingularStringLiteralDomain)
+        -->
+        <exclude name="WordPress.WP.I18n.NonSingularStringLiteralDomain" />
+    </rule>
+
+    <arg name="colors"/>
+    <arg value="spvn"/>
+</ruleset>
