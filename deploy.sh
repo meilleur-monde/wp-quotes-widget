@@ -3,7 +3,7 @@
 echo "deploy.sh TRAVIS_BRANCH=$TRAVIS_BRANCH TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST TRAVIS_TAG=$TRAVIS_TAG"
 
 # Is this not a Pull Request?
-if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
     echo "deploy disabled on pull request"
     exit 1
 fi
