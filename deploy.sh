@@ -3,9 +3,9 @@
 BRANCH="master"
 
 # Are we on the right branch?
-if [ "$TRAVIS_BRANCH" = "$BRANCH" ]; then
+if [[ "$TRAVIS_BRANCH" = "$BRANCH" ]]; then
     # Is this not a Pull Request?
-    if [ "$TRAVIS_PULL_REQUEST" = false ]; then
+    if [[ "$TRAVIS_PULL_REQUEST" = "false" ]]; then
         echo "create deploy temp directory"
         rm -Rf /tmp/better-world-quotes-widget
         mkdir -p /tmp/better-world-quotes-widget
@@ -24,5 +24,11 @@ if [ "$TRAVIS_BRANCH" = "$BRANCH" ]; then
 
         echo "create checksum file"
         sha1sum /tmp/better-world-quotes-widget.zip > /tmp/better-world-quotes-widget.zip.sha1
+    else
+        echo "deploy disabled on pull request"
+        exit 1
     fi
+else
+    echo "deploy disabled on branch different than master"
+    exit 1
 fi
