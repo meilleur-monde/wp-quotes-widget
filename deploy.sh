@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
 
-BRANCH="master"
+echo "deploy.sh TRAVIS_BRANCH=$TRAVIS_BRANCH TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST TRAVIS_TAG=$TRAVIS_TAG"
 
-# Are we on the right branch?
-if [[ "$TRAVIS_BRANCH" != "$BRANCH" ]]; then
-    echo "deploy disabled on branch different than master"
-    exit 1
-fi
 # Is this not a Pull Request?
 if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
     echo "deploy disabled on pull request"
