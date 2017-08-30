@@ -3,9 +3,9 @@
 BRANCH="master"
 
 # Are we on the right branch?
-if [[ "$TRAVIS_BRANCH" = "$BRANCH" ]]; then
+if [[ "$TRAVIS_BRANCH" == "$BRANCH" ]]; then
     # Is this not a Pull Request?
-    if [[ "$TRAVIS_PULL_REQUEST" = "false" ]]; then
+    if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
         echo "create deploy temp directory"
         rm -Rf /tmp/better-world-quotes-widget
         mkdir -p /tmp/better-world-quotes-widget
