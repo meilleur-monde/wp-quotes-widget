@@ -14,3 +14,6 @@ find /tmp/better-world-quotes-widget -type d \! -exec test -e '{}/index.php' \; 
 
 echo "zip the files"
 zip -r /tmp/better-world-quotes-widget.zip /tmp/better-world-quotes-widget
+
+echo "create checksum file"
+sha1sum /tmp/better-world-quotes-widget.zip > /tmp/better-world-quotes-widget.zip.sha1
