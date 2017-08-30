@@ -77,5 +77,20 @@ script:
       # --extensions: Only sniff PHP files.
   - if [[ "$SNIFF" == "1" ]]; then npm run phpcs --silent; fi
 
+# when we create a Tag on master branch, it will generate a zip file with only the files necessary for the plugin
+deploy:
+  - provider: releases
+    script:
+      # not executed for pull request
+      - if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then ./deploy.sh; fi
+    api_key:
+      # Github personal access token encrypted using the command 'travis encrypt myAccessTokenString'
+      secure: "KopI0QHd/M5IbgE8a6DUHT+YDGytGMEB28r68mx8BV3dAim09UNaxnABiIk5mWaheC7yUlbQ1LS20uOM9+9Xssa5NyMDiMzN14VjH+ykdkqJvuqGGdLn4eMi7WDljH2J8MfBlsfCIgNGE2ZjeuYf1CTWXaGPOWWRDvKixeMqa0LUP8cLeuh/8UKDAqEXf959/gTkNJI5rqhPGXrrp+Yt+XtsTYJCbW7b7Ue/jWPWfzxaqFKTw1OIckOErIyfBoiMPkozHPTUvdCm+asvkNptgOemjEuw4NFV0TOwqEoU08E23MQ/ZCI+YYHlhxaJe9qSrmHN/hS4v3LQhQL/bbMGuzeKnhs7Vvd0m3ZPKwEkCwz15VHb2JzE5eHeCR5iybK9rXqRcEp+64uYtYjH5veW4DQynXaWFl0pG1uyPlOBEs7dHisDlawQECm0cBboCZtK2lJzmrOr/7aaoB8Fm0j6+LB3lDl8KJWh4v8DKZut5P81XPgloT/clwkXE3Ta8tDdeR9jhVDOQn4nw3hJTYEG4lJ9WgfarA8YDGX6XuZN53sdDc8nrgk5awP0uKpxIj6QT1nHgBS3hNe+RdVYx+hBPkX1zcajzwAPHV5LwLAxcG5rEAlBTdq4LuZwrOOClAs5QjJITXk3gdK5olNwHVNGC7z44e7tT7ctqylOvDG40Rw="
+    file: "/tmp/better-world-quotes-widget.zip"
+    file: "/tmp/better-world-quotes-widget.zip.sha1"
+    skip_cleanup: true
+    on:
+      tags: true
+
 notifications:
   email: false
