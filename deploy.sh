@@ -28,7 +28,10 @@ echo "<?php // Silence is golden" > /tmp/index.php
 find /tmp/better-world-quotes-widget -type d \! -exec test -e '{}/index.php' \; -exec cp /tmp/index.php {} \;
 
 echo "zip the files"
-zip -r /tmp/better-world-quotes-widget.zip /tmp/better-world-quotes-widget
+cd /tmp
+zip -r better-world-quotes-widget.zip better-world-quotes-widget
 
 echo "create checksum file"
-sha1sum /tmp/better-world-quotes-widget.zip > /tmp/better-world-quotes-widget.zip.sha1
+sha1sum better-world-quotes-widget.zip > better-world-quotes-widget.zip.sha1
+
+cd -
