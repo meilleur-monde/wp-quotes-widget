@@ -46,7 +46,8 @@ before_script:
   # Set up WordPress installation.
   - mkdir -p wordpress
   # Use the Git mirror of WordPress.
-  - if [[ "$SNIFF" == "1" ]]; then git clone --depth=1 --branch="$WP_VERSION" git://develop.git.wordpress.org/ wordpress; fi
+  - if [[ "$SNIFF" == "1" ]]; then mkdir -p wordpress; fi
+  - if [[ "$SNIFF" == "1" && ! -d "./wordpress" ]]; then git clone --depth=1 --branch="$WP_VERSION" git://develop.git.wordpress.org/ wordpress; fi
   #install
   - if [[ "$SNIFF" == "1" ]]; then composer install; fi
   # After CodeSniffer install you should refresh your path.
