@@ -48,6 +48,12 @@ matrix:
           branches:
             - master
 
+before_install:
+  - nvm install stable
+  - npm update -g npm
+  - node --version
+  - npm --version
+
 before_script:
   - chmod +x ./travis_scripts/*.sh
   - "./travis_scripts/before-script.sh"
