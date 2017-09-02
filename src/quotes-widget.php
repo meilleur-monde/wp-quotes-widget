@@ -30,6 +30,6 @@ if ( ! defined( 'BETTER_WORLD_QUOTES_WIDGET_VERSION_NUM' ) ) {
 
 add_option( BETTER_WORLD_QUOTES_WIDGET_VERSION_KEY, BETTER_WORLD_QUOTES_WIDGET_VERSION_NUM );
 
-require_once( __DIR__ . '/class-quotes-widget-install-check.php' );
-require_once( __DIR__ . '/class-quotes-widget.php' );
+require_once __DIR__ . '/admin/class-quotes-widget-install-check.php';
+require_once __DIR__ . '/admin/class-quotes-widget.php';
 
