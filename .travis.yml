@@ -44,7 +44,7 @@ matrix:
         sonarcloud:
           organization: betterworld
         token:
-          secure: hGX4Bq09e5/fUdedv7HtfYNIOIkl6rd8psqRZEZ5oeK7QbgelwWOrkeuD3BcHI4g781rQ5pFZdUvaZNsnPeTMaCEDCPoLs7vfeQn3EILDbdrBjYUwPHEnbrZxoZRYfJoYG771tt9PrqjvNCu0axz8DNmApz70IM9/UTKhmKZIdO8llAFOnG8poC5eBD37iWxGxniAN5rzcFxp9SmJqzguzDFcIkEyOE4/tvHTFmxubfyfTKunsfjBz/aIwUf4iWA0cRfYxf7zmtXJdRJgUbbvJQeMun9p6zDXTxCY/dmYK6CrFxPEBqSL6BqXJBmtJP3lAFXDeTKMFIrhVjLIJXc3hrPUJdDN4Snj5CH1pm6X+DzzZlCaOX/1z8dXheytXlPF8ZmN9yqLyO0779NL4wENSb1fO+LOqsyF8JWK4IP9PAL8AnuI7kxIZ9DMQlddqxI+wAsFyKubLODoyL3D5j/fZZGbP8sN8/8kLBZeu1lUMODnT6F0xgCrrNCcjLEGFZSW+Aij9c7Z7VRF8nj+YsZRa1jYwiIQ/njqYmLyLPHLjMLI2c/82uSePMYvHY9CgEWoP1zhUvUiwI4X+aTQXoUBdyldIaP+26hGDAYGs3oPDZUz9cN6csPBl+RUrffbmcjVLDcQlGgVnCXBvRRwqMGVECNA1uQwinmb4VCexwNV+s=
+          secure: BK9nGQEWraiE0eKiB2aDgpj511GpoYV4oMMuoGgnTqDt63clOzC1/VsLjEmNiSJKinKwr/IqYK+qiBWiBzkDLN6FVqVlnx0UAn5OotzpAiybgcVMMYs7lIOUPvEG04yrIEFyhvzHOrLxhKikTXLqMXDpPkYmvep/JdJFjfc5b7JJ21OwUVgWVxYS5h6fw71I6SgOuED8AiqgNhRanCUNlB+sc2tv3NcpW9dM3OsaqhtSpcyj4eR/g11XW2jgjb2cEnzwijSvLIfz1rSt9cDPxNgmsxLjviqtLaUBmI5Nl2Pc/HxwfKyBJZsepQCmgtMwZW678O+2NYurOODz10pob4B8bEGQip4K9hOWqcVdYMPLuWxrECu54aImxgkqiyfEDKW6S0klSpVaUCQPtoK4BX7q1OqB7YgHReU/GKCCSeq14vqwSxOhNCx2gmi4W/dQtihrcrOPmOScP0NEnDk4hzh270XemjGxCfoHM2bhVTVSvm/803Jm084BdXF1IMEQOusXeaixqw8FWvr301bEvaGfMSjbt/OR2mPSUabtQIU6knCpl3Qb3Wk9VdTfiE/kEQy7KLSnn5q0OPfb2/sNsvJ11FHW86cp2tDTgpMWABxEceR3NsSWRDstsV9W0PEsfGhpIWubEDGgIQIN0EgXCyIYhAQNnESaoh1SWnZq8Pw=
         branches:
           - master
 
@@ -55,7 +55,10 @@ before_install:
   - npm --version
 
 install:
+  #sonar plugins
   - if [[ $SONAR_QUBE == 1 ]]; then curl https://sonarsource.bintray.com/Distribution/sonar-php-plugin/sonar-php-plugin-2.10.0.2087.jar; fi
+  - if [[ $SONAR_QUBE == 1 ]]; then curl https://sonarsource.bintray.com/Distribution/sonar-javascript-plugin/sonar-javascript-plugin-3.1.1.5128.jar; fi
+  - if [[ $SONAR_QUBE == 1 ]]; then curl https://github.com/racodond/sonar-css-plugin/releases/download/4.9/sonar-css-plugin-4.9.jar; fi
 
 before_script:
   - chmod +x ./travis_scripts/*.sh
