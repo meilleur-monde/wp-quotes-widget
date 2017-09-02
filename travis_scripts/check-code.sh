@@ -30,5 +30,7 @@ fi
 
 #sonar
 if [[ $SONAR_QUBE == 1 ]]; then
+    cat /home/travis/.sonarscanner/sonar-scanner-2.8/conf/sonar-scanner.properties
+    find /home/travis/.sonarscanner/sonar-scanner-2.8
     sonar-scanner -X
 fi
