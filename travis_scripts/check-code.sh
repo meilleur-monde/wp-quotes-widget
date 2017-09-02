@@ -26,6 +26,15 @@ if [[ "$SNIFF" == "1" ]]; then
         # --standard: Use WordPress as the standard.
         # --extensions: Only sniff PHP files.
     npm run phpcs --silent
+
+    # PHP Copy/Paste Detector
+    npm run phpcpd --verbose src --silent
+
+    # PHP Mess Detector
+    npm run phpmd src text ./.phpmd.xml --silent
+
+    # PHPLOC: get some statistics
+    npm run phploc src --silent
 fi
 
 #sonar

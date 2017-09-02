@@ -15,7 +15,10 @@
     "stylelint": "node node_modules/stylelint/bin/stylelint.js --config ./.stylelint src/public/css/*.css src/admin/css/*.css",
     "eslint": "node node_modules/eslint/bin/eslint.js --config ./.eslintrc.js 'src/public/js/*.js' 'src/admin/js/*.js' --quiet",
     "phpcs": "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=./.phpcs.xml",
-    "phpcbf": "php vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=./.phpcs.xml"
+    "phpcbf": "php vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=./.phpcs.xml",
+    "phpmd": "php vendor/phpmd/phpmd/src/bin/phpmd",
+    "phpcpd": "php vendor/sebastian/phpcpd/phpcpd",
+    "phploc": "php vendor/phploc/phploc/phploc"
   },
   "repository": {
     "type": "git",

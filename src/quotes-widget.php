@@ -18,7 +18,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 if ( ! defined( 'BETTER_WORLD_QUOTES_WIDGET_VERSION_KEY' ) ) {
 	define( 'BETTER_WORLD_QUOTES_WIDGET_VERSION_KEY', 'BetterWorldQuotesWidgetVersion' );

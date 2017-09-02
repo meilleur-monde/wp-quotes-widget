@@ -6,18 +6,22 @@ set -ev
 
 if [[ "$SNIFF" == "1" ]]; then
     # Set up WordPress installation.
-    mkdir -p wordpress;
+    mkdir -p wordpress
+
     # Use the Git mirror of WordPress.
     if [[ ! -d "./wordpress" ]]; then
-        git clone --depth=1 --branch="$WP_VERSION" git://develop.git.wordpress.org/ wordpress;
+        git clone --depth=1 --branch="$WP_VERSION" git://develop.git.wordpress.org/ wordpress
     fi
+
     #install
     composer install
+
     # After CodeSniffer install you should refresh your path.
-    phpenv rehash;
+    phpenv rehash
+
     # Install ESLINT: JavaScript Code Style checker
     # @link https://eslint.org/
-    npm install --only=dev;
+    npm install --only=dev
 fi
 
 if [[ $SONAR_QUBE == 1 ]]; then
