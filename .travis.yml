@@ -7,8 +7,7 @@ cache:
     - node_modules
     - vendor
     - wordpress
-    #only for sonarQube
-    - "$HOME/.m2/repository"
+    #only for sonarcloud
     - "$HOME/.sonar/cache"
 
 env:
@@ -29,12 +28,12 @@ matrix:
       # Declare which versions of WordPress to test against.
       # Also declare whether or not to test in Multisite.
       # lint, other checks and deploy on php5.6
-      env: SNIFF=1 WP_VERSION=master WP_MULTISITE=0 DEPLOY=1
+      env: PHPLINT=1 SNIFF=1 WP_VERSION=master WP_MULTISITE=0 DEPLOY=1
 
     # aliased to a recent 7.x version
     - php: '7.0'
       # only lint on php7.0
-      env: SNIFF=0
+      env: PHPLINT=1 SNIFF=0
 
     # aliased to a java 8 version
     - jdk: oraclejdk8
@@ -42,11 +41,12 @@ matrix:
       env: SONAR_QUBE=1
       #only for sonoarQube
       addons:
-        sonarqube:
+        sonarcloud:
           organization: betterworld
-        sonar:
-          token:
-            secure: hGX4Bq09e5/fUdedv7HtfYNIOIkl6rd8psqRZEZ5oeK7QbgelwWOrkeuD3BcHI4g781rQ5pFZdUvaZNsnPeTMaCEDCPoLs7vfeQn3EILDbdrBjYUwPHEnbrZxoZRYfJoYG771tt9PrqjvNCu0axz8DNmApz70IM9/UTKhmKZIdO8llAFOnG8poC5eBD37iWxGxniAN5rzcFxp9SmJqzguzDFcIkEyOE4/tvHTFmxubfyfTKunsfjBz/aIwUf4iWA0cRfYxf7zmtXJdRJgUbbvJQeMun9p6zDXTxCY/dmYK6CrFxPEBqSL6BqXJBmtJP3lAFXDeTKMFIrhVjLIJXc3hrPUJdDN4Snj5CH1pm6X+DzzZlCaOX/1z8dXheytXlPF8ZmN9yqLyO0779NL4wENSb1fO+LOqsyF8JWK4IP9PAL8AnuI7kxIZ9DMQlddqxI+wAsFyKubLODoyL3D5j/fZZGbP8sN8/8kLBZeu1lUMODnT6F0xgCrrNCcjLEGFZSW+Aij9c7Z7VRF8nj+YsZRa1jYwiIQ/njqYmLyLPHLjMLI2c/82uSePMYvHY9CgEWoP1zhUvUiwI4X+aTQXoUBdyldIaP+26hGDAYGs3oPDZUz9cN6csPBl+RUrffbmcjVLDcQlGgVnCXBvRRwqMGVECNA1uQwinmb4VCexwNV+s=
+        token:
+          secure: hGX4Bq09e5/fUdedv7HtfYNIOIkl6rd8psqRZEZ5oeK7QbgelwWOrkeuD3BcHI4g781rQ5pFZdUvaZNsnPeTMaCEDCPoLs7vfeQn3EILDbdrBjYUwPHEnbrZxoZRYfJoYG771tt9PrqjvNCu0axz8DNmApz70IM9/UTKhmKZIdO8llAFOnG8poC5eBD37iWxGxniAN5rzcFxp9SmJqzguzDFcIkEyOE4/tvHTFmxubfyfTKunsfjBz/aIwUf4iWA0cRfYxf7zmtXJdRJgUbbvJQeMun9p6zDXTxCY/dmYK6CrFxPEBqSL6BqXJBmtJP3lAFXDeTKMFIrhVjLIJXc3hrPUJdDN4Snj5CH1pm6X+DzzZlCaOX/1z8dXheytXlPF8ZmN9yqLyO0779NL4wENSb1fO+LOqsyF8JWK4IP9PAL8AnuI7kxIZ9DMQlddqxI+wAsFyKubLODoyL3D5j/fZZGbP8sN8/8kLBZeu1lUMODnT6F0xgCrrNCcjLEGFZSW+Aij9c7Z7VRF8nj+YsZRa1jYwiIQ/njqYmLyLPHLjMLI2c/82uSePMYvHY9CgEWoP1zhUvUiwI4X+aTQXoUBdyldIaP+26hGDAYGs3oPDZUz9cN6csPBl+RUrffbmcjVLDcQlGgVnCXBvRRwqMGVECNA1uQwinmb4VCexwNV+s=
+        branches:
+          - master
 
 before_install:
   - nvm install stable
@@ -55,7 +55,7 @@ before_install:
   - npm --version
 
 install:
-  - if [[ $SONAR_QUBE == 1 ]]; then mvn dependency:go-offline; fi
+  - if [[ $SONAR_QUBE == 1 ]]; then curl https://sonarsource.bintray.com/Distribution/sonar-php-plugin/sonar-php-plugin-2.10.0.2087.jar; fi
 
 before_script:
   - chmod +x ./travis_scripts/*.sh
@@ -63,7 +63,6 @@ before_script:
 
 script:
   - "./travis_scripts/check-code.sh"
-  - if [[ $SONAR_QUBE == 1 ]]; then mvn verify site sonar:sonar -Dmaven.test.failure.ignore=true; fi
 
 #only if $DEPLOY=1
 after_success: "./travis_scripts/deploy.sh"

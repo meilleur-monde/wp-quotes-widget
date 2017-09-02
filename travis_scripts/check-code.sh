@@ -5,7 +5,10 @@
 set -ev
 
 # Search for PHP syntax errors for all php version
-npm run phplint --silent
+# noinspection UnresolvedVariable
+if [[ "$PHPLINT" == "1" ]]; then
+    npm run phplint --silent
+fi
 
 #additional tests on certain plateform
 if [[ "$SNIFF" == "1" ]]; then
@@ -23,4 +26,9 @@ if [[ "$SNIFF" == "1" ]]; then
         # --standard: Use WordPress as the standard.
         # --extensions: Only sniff PHP files.
     npm run phpcs --silent
+fi
+
+#sonar
+if [[ $SONAR_QUBE == 1 ]]; then
+    sonar-scanner
 fi
