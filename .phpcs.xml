@@ -2,14 +2,7 @@
 <ruleset>
     <arg name="extensions" value="php"/>
     <arg value="s"/>
-    <file>./admin</file>
-    <file>./public</file>
-    <file>./quotes-widget.php</file>
-    <file>./class-quotes-widget.php</file>
-    <file>./class-quotes-widget-install-check.php</file>
-    <exclude-pattern type="relative">^/node-modules/*</exclude-pattern>
-    <exclude-pattern type="relative">^/vendor/*</exclude-pattern>
-    <exclude-pattern type="relative">^/wordpress/*</exclude-pattern>
+    <file>./src</file>
     <rule ref="WordPress-Extra">
         <!-- removes error like
             The $domain arg must be a single string literal, not

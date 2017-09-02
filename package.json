@@ -11,9 +11,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "phplint": "find . -name '*.php' -not -path './node-modules/*' -not -path './vendor/*' -not -path './wordpress/*' -exec php -lf '{}' ';'",
-    "stylelint": "node node_modules/stylelint/bin/stylelint.js --config ./.stylelint public/css/*.css admin/css/*.css",
-    "eslint": "node node_modules/eslint/bin/eslint.js --config ./.eslintrc.js 'public/js/*.js' 'admin/js/*.js' --quiet",
+    "phplint": "find src -name '*.php' -exec php -lf '{}' ';'",
+    "stylelint": "node node_modules/stylelint/bin/stylelint.js --config ./.stylelint src/public/css/*.css src/admin/css/*.css",
+    "eslint": "node node_modules/eslint/bin/eslint.js --config ./.eslintrc.js 'src/public/js/*.js' 'src/admin/js/*.js' --quiet",
     "phpcs": "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=./.phpcs.xml",
     "phpcbf": "php vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=./.phpcs.xml"
   },

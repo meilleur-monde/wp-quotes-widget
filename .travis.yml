@@ -42,7 +42,7 @@ matrix:
       #only for sonoarQube
       addons:
         sonarcloud:
-          organization: betterworld
+          organization: betterWorld
         token:
           secure: hGX4Bq09e5/fUdedv7HtfYNIOIkl6rd8psqRZEZ5oeK7QbgelwWOrkeuD3BcHI4g781rQ5pFZdUvaZNsnPeTMaCEDCPoLs7vfeQn3EILDbdrBjYUwPHEnbrZxoZRYfJoYG771tt9PrqjvNCu0axz8DNmApz70IM9/UTKhmKZIdO8llAFOnG8poC5eBD37iWxGxniAN5rzcFxp9SmJqzguzDFcIkEyOE4/tvHTFmxubfyfTKunsfjBz/aIwUf4iWA0cRfYxf7zmtXJdRJgUbbvJQeMun9p6zDXTxCY/dmYK6CrFxPEBqSL6BqXJBmtJP3lAFXDeTKMFIrhVjLIJXc3hrPUJdDN4Snj5CH1pm6X+DzzZlCaOX/1z8dXheytXlPF8ZmN9yqLyO0779NL4wENSb1fO+LOqsyF8JWK4IP9PAL8AnuI7kxIZ9DMQlddqxI+wAsFyKubLODoyL3D5j/fZZGbP8sN8/8kLBZeu1lUMODnT6F0xgCrrNCcjLEGFZSW+Aij9c7Z7VRF8nj+YsZRa1jYwiIQ/njqYmLyLPHLjMLI2c/82uSePMYvHY9CgEWoP1zhUvUiwI4X+aTQXoUBdyldIaP+26hGDAYGs3oPDZUz9cN6csPBl+RUrffbmcjVLDcQlGgVnCXBvRRwqMGVECNA1uQwinmb4VCexwNV+s=
         branches:

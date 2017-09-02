@@ -24,7 +24,8 @@ if [[ $DEPLOY == 1 ]]; then
     mkdir -p /tmp/better-world-quotes-widget
 
     echo "copy all project files"
-    cp -R admin languages public *.php *.md /tmp/better-world-quotes-widget
+    cp -R src/* /tmp/better-world-quotes-widget
+    cp -R *.md /tmp/better-world-quotes-widget
 
     # TODO minify the css and js files
 
