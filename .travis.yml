@@ -44,7 +44,7 @@ matrix:
         sonarcloud:
           organization: betterworld
         token:
-          secure: BK9nGQEWraiE0eKiB2aDgpj511GpoYV4oMMuoGgnTqDt63clOzC1/VsLjEmNiSJKinKwr/IqYK+qiBWiBzkDLN6FVqVlnx0UAn5OotzpAiybgcVMMYs7lIOUPvEG04yrIEFyhvzHOrLxhKikTXLqMXDpPkYmvep/JdJFjfc5b7JJ21OwUVgWVxYS5h6fw71I6SgOuED8AiqgNhRanCUNlB+sc2tv3NcpW9dM3OsaqhtSpcyj4eR/g11XW2jgjb2cEnzwijSvLIfz1rSt9cDPxNgmsxLjviqtLaUBmI5Nl2Pc/HxwfKyBJZsepQCmgtMwZW678O+2NYurOODz10pob4B8bEGQip4K9hOWqcVdYMPLuWxrECu54aImxgkqiyfEDKW6S0klSpVaUCQPtoK4BX7q1OqB7YgHReU/GKCCSeq14vqwSxOhNCx2gmi4W/dQtihrcrOPmOScP0NEnDk4hzh270XemjGxCfoHM2bhVTVSvm/803Jm084BdXF1IMEQOusXeaixqw8FWvr301bEvaGfMSjbt/OR2mPSUabtQIU6knCpl3Qb3Wk9VdTfiE/kEQy7KLSnn5q0OPfb2/sNsvJ11FHW86cp2tDTgpMWABxEceR3NsSWRDstsV9W0PEsfGhpIWubEDGgIQIN0EgXCyIYhAQNnESaoh1SWnZq8Pw=
+          secure: y70P0wz3Bzy5myXbBixCT/DRxRLiapKQ9nhcgNorelMMUUY6/5wb9SvgjBbD2H1ePGWWlXrlKPg2sXbPAly6o/lzGjBCj7z/1+kIXBC5ZLTlKhc6Q391yR+y28r3oQlvn62hsvhNbAJvARjUAJcslsR2n8E04H17CFlR7LvESkmxDNxOqpBfBCsHFV1t7QAM6nhFoow33tlxqhiFIObDOv8c+RJKyC2qvseaGLBfFygOFdSeIu9FpMfxpktFX9+DZBNPHAm6eUTQiPhkvgiQ2F9CHmyVhXFB6Z5LTqw/jpB/ZI6pgR5r+c2hlfeOs8glo67KgkEW1OxS9uNyCyPo3Iqn9VR2ETtP82igAmveCW7xIpBt4gjP6BPhHsC+8Sl7ATK4OHlFmPnCUGkEQMllzJOUw8Pegtby24KF5Pb0BsCADdN7sXLUYKPzjnlopl4UIwcAznSCBTcGSWV8rrXEmci8Zva/rDwrWCTn6tx41X40Ph1t4V6oGxhXqlmx8+WItru1Kv15P+GRCPpsrPZcSUNbo3VRhIpyB7K1npLzFPj1OOZZlEcuz4iS98bxnpid6USKk5g068iRHLLRc5OYh/lUe0izX6jpWRpdbtu1dOxdpg1d9RORPilsgXm9z5gF1zv2NT2iY7OrtLcxtX9KnqHeIKvU4kvND3sHJJi+YvU=
         branches:
           - master
 
@@ -58,7 +58,7 @@ install:
   #sonar plugins
   - if [[ $SONAR_QUBE == 1 ]]; then curl https://sonarsource.bintray.com/Distribution/sonar-php-plugin/sonar-php-plugin-2.10.0.2087.jar; fi
   - if [[ $SONAR_QUBE == 1 ]]; then curl https://sonarsource.bintray.com/Distribution/sonar-javascript-plugin/sonar-javascript-plugin-3.1.1.5128.jar; fi
-  - if [[ $SONAR_QUBE == 1 ]]; then curl https://github.com/racodond/sonar-css-plugin/releases/download/4.9/sonar-css-plugin-4.9.jar; fi
+  - if [[ $SONAR_QUBE == 1 ]]; then curl -L https://github.com/racodond/sonar-css-plugin/releases/download/4.9/sonar-css-plugin-4.9.jar; fi
 
 before_script:
   - chmod +x ./travis_scripts/*.sh
