@@ -203,7 +203,6 @@ if ( ! class_exists( 'BetterWorld\\Quotes_Widget_Form' ) ) {
 		 *
 		 * @param array $instance Current settings.
 		 *
-		 * @return void
 		 * @inheritdoc
 		 */
 		public function form( $instance ) {
