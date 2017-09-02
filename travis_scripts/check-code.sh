@@ -30,5 +30,5 @@ fi
 
 #sonar
 if [[ $SONAR_QUBE == 1 ]]; then
-    sonar-scanner
+    sonar-scanner -X
 fi
