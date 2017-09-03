@@ -165,7 +165,6 @@ if ( ! class_exists( 'BetterWorld\\Quotes_Widget_Form' ) ) {
 			//convert tags list to array
 			$instance['tags'] = $this->validate_tags_list( $form_options, $new_instance['tags'] );
 
-
 			return $instance;
 		}
 

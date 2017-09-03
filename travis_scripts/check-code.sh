@@ -25,15 +25,19 @@ if [[ "$SNIFF" == "1" ]]; then
         # -n flag: Do not print warnings (shortcut for --warning-severity=0)
         # --standard: Use WordPress as the standard.
         # --extensions: Only sniff PHP files.
+    echo "########## PHPCS ###############"
     npm run phpcs --silent
 
     # PHP Copy/Paste Detector
+    echo "########## PHP Copy/Paste Detector ###############"
     npm run phpcpd --verbose src --silent
 
     # PHP Mess Detector
+    echo "########## PHP Mess Detector ###############"
     npm run phpmd src text ./.phpmd.xml --silent
 
     # PHPLOC: get some statistics
+    echo "########## PHPLOC ###############"
     npm run phploc src --silent
 fi
 
