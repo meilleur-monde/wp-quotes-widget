@@ -163,34 +163,45 @@ if ( ! class_exists( 'BetterWorld\\Quotes_Widget_Form' ) ) {
 			}
 
 			//convert tags list to array
-			$instance['tags'] = $new_instance['tags'];
-			if ( ! empty( $new_instance['tags'] ) ) {
-				$tags = explode( ',', $new_instance['tags'] );
-				//tags validation
-				$validated_tag_list = [];
-				$error_tag_list     = [];
-				foreach ( $tags as $tag ) {
-					$tag = trim( $tag );
-					if ( empty( $tag ) ) {
-						continue;
-					}
-					$ret = term_exists( $tag, Quotes_Widget_Custom_Type::QUOTE_TAXONOMY_ID );
-					if ( $ret ) {
-						$validated_tag_list [] = $ret['term_id'];
-					} else {
-						$error_tag_list[] = $tag;
-					}
-				}
-				if ( ! empty( $error_tag_list ) ) {
-					$this->form_validation_errors['tags_error_msg']   = $form_options['tags']['validation_error_message'];
-					$this->form_validation_errors['tags_error_value'] = implode( ', ', $error_tag_list );
-				}
-				//tags validated list
-				$instance['tags'] = array_unique( $validated_tag_list );
+			$instance['tags'] = $this->validate_tags_list( $form_options, $new_instance['tags'] );
 
-			}
 
 			return $instance;
+		}
+
+		/**
+		 * @param $form_options array
+		 * @param $tags string list of tags to validate separated by comma
+		 *
+		 * @return array the list of valid tags extracted from $tags
+		 */
+		protected function validate_tags_list( $form_options, $tags ) {
+			if ( empty( $tags ) ) {
+				return [];
+			}
+			$tags_array = explode( ',', $tags );
+			//tags validation
+			$validated_tag_list = [];
+			$error_tag_list     = [];
+			foreach ( $tags_array as $tag_name ) {
+				$tag_name = trim( $tag_name );
+				if ( empty( $tag_name ) ) {
+					continue;
+				}
+				$ret = term_exists( $tag_name, Quotes_Widget_Custom_Type::QUOTE_TAXONOMY_ID );
+				if ( $ret ) {
+					$validated_tag_list [] = $ret['term_id'];
+				} else {
+					$error_tag_list[] = $tag_name;
+				}
+			}
+			if ( ! empty( $error_tag_list ) ) {
+				$this->form_validation_errors['tags_error_msg']   = $form_options['tags']['validation_error_message'];
+				$this->form_validation_errors['tags_error_value'] = implode( ', ', $error_tag_list );
+			}
+			//tags validated list
+			return array_unique( $validated_tag_list );
+
 		}
 
 		/**
